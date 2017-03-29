@@ -11,7 +11,7 @@ YUPRTEST files.
 import os, re, sys
 
 # private modules
-sys.path.append("./tools") # this is the generic folder for subroutines
+sys.path.append("./srcts/tools") # this is the generic folder for subroutines
 from ts_utilities import read_environ, dir_path, str_to_bool
 from ts_fortran_nl import get_param
 from sys import maxsize
