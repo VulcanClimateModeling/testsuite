@@ -11,7 +11,7 @@ YUCHKDAT files.
 import os, sys
 
 # private modules
-sys.path.append('./srcts/tools/')
+sys.path.append('./src/tools/')
 from ts_utilities import read_environ, dir_path
 from ts_fortran_nl import get_param
 from sys import maxsize

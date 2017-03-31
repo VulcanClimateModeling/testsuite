@@ -11,7 +11,7 @@ YUPRTEST files.
 import os, sys
 
 # private modules
-sys.path.append('./srcts/tools/')
+sys.path.append('./src/tools/')
 from ts_utilities import read_environ, dir_path, str_to_bool
 from ts_fortran_nl import get_param
 from ts_yuprtest import *

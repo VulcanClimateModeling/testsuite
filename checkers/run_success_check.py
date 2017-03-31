@@ -13,7 +13,7 @@ the tuple patternlist contains all the patterns.
 # built-in modules
 import sys
 # private modules
-sys.path.append("./srcts/tools")  # this is the generic folder for subroutines
+sys.path.append("./src/tools")  # this is the generic folder for subroutines
 from ts_utilities import read_environ, dir_path
 from filechecker import *
 

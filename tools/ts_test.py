@@ -240,7 +240,7 @@ class Test:
             self.logger.debug(checker+' START')
 
             # run checker and save result
-            checker_result,soutput = system_command('srcts/checkers/'+checker, self.logger, \
+            checker_result,soutput = system_command('src/checkers/'+checker, self.logger, \
                                                       return_output=True,throw_exception=False, \
                                                       issue_error=False)
             # print checker output
