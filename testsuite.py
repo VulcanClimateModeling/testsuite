@@ -16,7 +16,7 @@ import xml.etree.ElementTree as XML
 import logging as LG
 
 # private modules
-sys.path.append("./src/tools") # this is the generic folder for subroutines
+sys.path.append(os.path.join(os.path.dirname(__file__), "./tools")) # this is the generic folder for subroutines
 from ts_error import StopError, SkipError
 from ts_utilities import system_command, change_dir
 import ts_logger as LG

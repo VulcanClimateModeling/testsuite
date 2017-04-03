@@ -11,9 +11,9 @@ New patterns can be defined directly in the script
 the tuple patternlist contains all the patterns.
 """
 # built-in modules
-import sys
+import os, sys
 # private modules
-sys.path.append("./src/tools")  # this is the generic folder for subroutines
+sys.path.append(os.path.join(os.path.dirname(__file__), "../tools"))  # this is the generic folder for subroutines
 from ts_utilities import read_environ, dir_path
 from filechecker import *
 
