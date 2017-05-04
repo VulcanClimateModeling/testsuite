@@ -104,6 +104,29 @@ Command line arguments are used to control the execution of the main \texttt{tes
 \texttt{--reset-thresholds} & Sets all values in threshold files to 0.0 on the first run of a test\\[1.2ex]
 \end{tabular}
 
+\section{Testsuite configuration}
+If a configuration file testsuite\_config.cfg is present in the current
+directory it will be read, otherwise the default configuration file in the
+testsuite source directory will be used. It contains the following
+information:
+\begin{verbatim}
+# List of INPUT namelist 
+# Should be a python list format
+l_files = ['INPUT_ORG','INPUT_ASS','INPUT_DIA','INPUT_DYN','INPUT_INI',\
+                    'INPUT_IO','INPUT_PHY','INPUT_SAT','INPUT_POL','INPUT_IDEAL']
+# File containing the parallelisation option (nproc ...)
+par_file = INPUT_ORG
+# File containing time step information
+dt_file = INPUT_ORG
+# File containing test result
+res_file = TEST_RES
+# File used for the tolerance checker
+yufile = YUPRTEST
+# List of dual parameters (which may be interchanged in the namelists)
+# Should be a python list format
+dual_params=[('nstop','hstop'),('hincrad','nincrad')]
+\end{verbatim}
+
 %---------------------------------------------------------------------
 \newpage
 \section{Test specification (\texttt{testlist.xml})}

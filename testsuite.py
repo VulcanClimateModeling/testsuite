@@ -14,6 +14,8 @@ import os, sys, string, struct
 import optparse as OP
 import xml.etree.ElementTree as XML
 import logging as LG
+import ConfigParser
+import ast
 
 # private modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "./tools")) # this is the generic folder for subroutines
@@ -33,39 +35,30 @@ __email__      = "cosmo-wg6@cosmo.org"
 __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 
 
-def setup_configuration():
-    """setup an object to carry some global configuration parameters"""
+def parse_config_file(filename):
+    config = ConfigParser.RawConfigParser()
 
-    # construct empty structure
-    class Empty:
-        pass
-    conf = Empty()
+    # create empty conf object
+    conf = type('configuration', (), {})()
 
     # save base directory where testsuite is executed
     conf.basedir = os.getcwd()
 
-    # list of all namelist files which will copied
-    conf.l_files = ['INPUT_ORG','INPUT_ASS','INPUT_DIA','INPUT_DYN','INPUT_INI',\
-                    'INPUT_IO','INPUT_PHY','INPUT_SAT','INPUT_POL','INPUT_IDEAL']
+    try:
+        config.read(filename)
+        conf.l_files     = ast.literal_eval(config.get('ts_config','l_files'))
+        conf.par_file    = config.get('ts_config','par_file')
+        conf.dt_file     = config.get('ts_config','dt_file')
+        conf.res_file    = config.get('ts_config','res_file')
+        conf.yufile      = config.get('ts_config','yufile')
+        conf.dual_params = ast.literal_eval(config.get('ts_config','dual_params'))
 
-    # namelist file which contains nprocx, nprocy and nprocio
-    conf.par_file = 'INPUT_ORG'
-
-    # namelist file which contains the timestep (dt)
-    conf.dt_file = 'INPUT_ORG'
-
-    # name of file to which test result is being written
-    conf.res_file = 'TEST_RES'
-
-    # name of the main file containing output for testing
-    conf.yufile = 'YUPRTEST'
-
-    # dual namelist parameters (relevant to the testsuite)
-    conf.dual_params = []
-    conf.dual_params.append(('nstop','hstop'))
-    conf.dual_params.append(('hincrad','nincrad'))
-
-    return conf
+    except Exception as e:
+        print('Error while reading config file '+filename+':')
+        print(e)
+        raise # this exits with full traceback
+        
+    return conf 
 
 
 def parse_cmdline():
@@ -227,7 +220,18 @@ def main():
     """read configuration and then execute tests"""
 
     # definition of structure carrying global configuration
-    conf = setup_configuration()
+    # search for config file in current path, otherwise takes
+    # default configuration file in testsuite source directory
+    if os.path.isfile("./testsuite_config.cfg"):
+        config_file = "./testsuite_config.cfg"
+    elif os.path.isfile(os.path.join(os.path.dirname(__file__),"./testsuite_config.cfg")):
+        config_file = os.path.join(os.path.dirname(__file__),"./testsuite_config.cfg")
+    else:
+        #logger not initialize at this stage, use print and exit
+        print("Error: Missing configuration file testsuite_config.cfg")
+        sys.exit(1)
+
+    conf = parse_config_file(config_file)
     
     # parse command line arguments
     options = parse_cmdline()
