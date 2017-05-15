@@ -7,10 +7,6 @@
 # observations (cdfin files) and output observations (feedobs files)
 
 # Author       Daniel Leuenberger
-# Copyright    Copyright 2014, COSMO Consortium
-# License      GPL
-# Version      1.0
-# Date         Wed Nov 26 2014
 # Email        cosmo-wg6@cosmo.org
 # Maintainer   daniel.leuenberger@meteoswiss.ch
 

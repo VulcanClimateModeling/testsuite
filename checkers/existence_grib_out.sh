@@ -6,10 +6,6 @@
 # file at hour zero
 
 # Author       Oliver Fuhrer
-# Copyright    Copyright 2012, COSMO Consortium
-# License      GPL
-# Version      1.0
-# Date         Mon Oct  8 15:37:57 CEST 2012
 # Email        cosmo-wg6@cosmo.org
 # Maintainer   xavier.lapillonne@meteoswiss.ch
 

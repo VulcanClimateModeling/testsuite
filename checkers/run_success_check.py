@@ -19,10 +19,6 @@ from filechecker import *
 
 # information
 __author__      = "Santiago Moreno, Nicolo Lardelli, Oliver Fuhrer"
-__copyright__   = "Copyright 2012, COSMO Consortium"
-__license__     = "GPL"
-__version__     = "1.0"
-__date__        = "23 Mar 2016"
 __email__       = "cosmo-wg6@cosmo.org"
 __maintainer__  = "xavier.lapillonne@meteoswiss.ch"
 

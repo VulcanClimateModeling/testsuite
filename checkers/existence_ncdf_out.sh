@@ -6,7 +6,6 @@
 # file at hour zero
 
 # Author       Burkhardt Rockel
-# Date         Fri Feb 13 15:11:31 CET 2015
 # Maintainer   burkhardt.rockel@hzg.de
 
 # check environment variables

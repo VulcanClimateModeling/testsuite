@@ -8,7 +8,7 @@ following exit codes:
 20   FAIL      test failed, results are outside of thresholds
 30   CRASH     test failed due to model crash
 
-The scipts can access environment variables which are set by the main
+The scripts can access environment variables which are set by the main
 testsuite.py program: 
 
 TS_BASEDIR      main testsuite directory (containing the testsuite.py script)   

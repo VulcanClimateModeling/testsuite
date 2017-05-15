@@ -17,10 +17,6 @@ from ts_fortran_nl import get_param, replace_param
 
 # information
 __author__     = "Nicolo Lardelli, Xavier Lapillonne, Oliver Fuhrer, Santiago Moreno"
-__copyright__  = "Copyright 2012, COSMO Consortium"
-__license__    = "GPL"
-__version__    = "1.1"
-__date__       = "Mon Jul 11 15:44:25 CEST 2016"
 __email__      = "cosmo-wg6@cosmo.org"
 __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 

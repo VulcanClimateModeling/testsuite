@@ -11,10 +11,6 @@ import os, sys, string, bisect
 
 # information
 __author__     = "Xavier Lapillonne"
-__copyright__  = "Copyright 2013, COSMO Consortium"
-__license__    = "GPL"
-__version__    = "1.0"
-__date__       = "02.12.2013"
 __email__      = "cosmo-wg6@cosmo.org"
 __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 

@@ -5,10 +5,6 @@ import os, re, sys, unittest
 
 # information
 __author__      = "Santiago Moreno"
-__copyright__   = "Copyright 2012, COSMO Consortium"
-__license__     = "GPL"
-__version__     = "1.0"
-__date__        = "30 Mar 2016"
 __email__       = "cosmo-wg6@cosmo.org"
 __maintainer__  = "xavier.lapillonne@meteoswiss.ch"
 

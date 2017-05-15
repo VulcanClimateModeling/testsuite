@@ -26,10 +26,6 @@ from ts_thresholds import Thresholds
 
 # information
 __author__      = "Oliver Fuhrer, Santiago Moreno"
-__copyright__   = "Copyright 2014-2016, COSMO Consortium"
-__license__     = "GPL"
-__version__     = "1.1"
-__date__        = "Mon Jul 11 15:44:25 CEST 2016"
 __email__       = "cosmo-wg6@cosmo.org"
 __maintainer__  = "oliver.fuhrer@meteoswiss.ch"
 

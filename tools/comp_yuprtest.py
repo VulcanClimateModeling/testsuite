@@ -11,10 +11,6 @@ import os, sys, string
 
 # information
 __author__     = "Xavier Lapillonne, Nicolo Lardelli"
-__copyright__  = "Copyright 2012, COSMO Consortium"
-__license__    = "GPL"
-__version__    = "1.0"
-__date__       = "Mon Oct  8 15:37:57 CEST 2012"
 __email__      = "cosmo-wg6@cosmo.org"
 __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 
