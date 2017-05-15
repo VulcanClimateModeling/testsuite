@@ -6,6 +6,7 @@
 \DeclareGraphicsExtensions{.jpg, .png , .pdf}
 \usepackage[margin=2cm]{geometry}
 \usepackage{color}
+\usepackage{longtable}
 \definecolor{grey}{rgb}{0.5,0.5,0.5}
 
 %---------------------------------------------------------------------
@@ -21,7 +22,7 @@
 
 %---
 
-\title{Technical Testsuite v1.0\\User Guide}
+\title{Technical Testsuite v2.1\\User Guide}
 %---------------------------------------------------------------------
 
 \begin{document}
@@ -34,9 +35,9 @@
 \section{Introduction}
 
 The main goal of the testsuite is to check technical correctness of a COSMO model version (see section Section 6.5 of the COSMO coding standards). The testsuite is implemented using the Python programming language.
-Based on a set of given model configurations (which can be defined by the user, for example COSMO-RU, COSMO-EU or COSMO-2), the test suite creates modifications of this configuration and launches a short simulation for each of the new configurations. The software than verifies that:
+Based on a set of given model configurations (which can be defined by the user, for example COSMO-RU, COSMO-EU or COSMO-2), the test suite creates modifications of this configuration and launches a short simulation for each of the new configurations. The software then verifies that:
 \begin{itemize}
-\item the simulations runs without aborting or crashing
+\item the simulations run without aborting or crashing
 \item the results are within rounding error with respect to a reference simulation
 \item the code gives bit identical results with different processor configurations or I/O configurations
 \item restart functionality is working and gives bit identical results
@@ -62,7 +63,7 @@ For each test a set of so called checkers (see section \ref{sec:checker}) are ca
 %---------------------------------------------------------------------
 \section{Testsuite folder organization}
 
-Figure~\ref{fig:structure} shows an overview of the organization of the testsuite root folder. The testsuite root folder contains the main program (\texttt{testsuite.py}) script as well as additional source files in the \texttt{tools/} and \texttt{checker/} folders. In addition to the source files, the main directory also contains a \texttt{data/} directory, which contains a folder for each type of test (e.g. cosmo7, cosmo2) with reference input and output files.\\
+Figure~\ref{fig:structure} shows an overview of the organization of the testsuite root folder. The testsuite \texttt{src/} folder contains the main program (\texttt{testsuite.py}) script as well as additional source files in the \texttt{tools/} and \texttt{checker/} folders. In addition to the source folder, the main directory also contains a \texttt{data/} directory, which contains a folder for each type of test (e.g. cosmo7, cosmo2) with reference input and output files.\\
 
 \begin{figure}[hbt]
 \begin{center}
@@ -71,7 +72,7 @@ Figure~\ref{fig:structure} shows an overview of the organization of the testsuit
 \end{center}
 \end{figure}
 
-When running the testsuite, for each of the tests defined in the \texttt{testlist.xml} input file, a separate directory \texttt{work/}type\texttt{/}testname\texttt{/} is created. First, the executable, namelists and auxiliary files are copied and the binary input linked into this folder. Then, the test simulation is run in this working directory. The working directories for the tests are not delete after execution, if a test failed the user can thus go return manually to these directories for further investigation.
+When running the testsuite, for each of the tests defined in the \texttt{testlist.xml} input file, a separate directory \texttt{work/}type\texttt{/}testname\texttt{/} is created. First, the executable, namelists and auxiliary files are copied and the binary input linked into this folder. Then, the test simulation is run in this working directory. The working directories for the tests are not deleted after execution; if a test failed the user can thus go return manually to these directories for further investigation.
 
 %---------------------------------------------------------------------
 \newpage
@@ -79,7 +80,7 @@ When running the testsuite, for each of the tests defined in the \texttt{testlis
 
 Command line arguments are used to control the execution of the main \texttt{testsuite.py} script. Below is a complete list of available arguments, where the default values/options are given in square brackets:\\
 
-\begin{tabular}{lp{10cm}}
+\begin{longtable}{lp{10cm}}
 \texttt{-h}, \texttt{--help} & Print the help message.\\[1.2ex]
 \texttt{-n} NPROCS & Number of processors (nprocx*nprocy+nprocio) to use [16].\\[1.2ex]
 \texttt{--nprocio=}NPROCIO & Set number of aynchronous IO processor [as specified in namelist]. If this argument is present it will override any values given in the namelist or \texttt{testlist.xml} file.\\[1.2ex]
@@ -92,8 +93,9 @@ Command line arguments are used to control the execution of the main \texttt{tes
 \texttt{-w}, \texttt{--wrapper} & Use wrapper instead of executable for mpicmd (useful for OpenMPI on Mac computers).\\[1.2ex]
 \texttt{-o} STDOUT & Redirect standard output to selected file.\\[1.2ex]
 \texttt{-a}, \texttt{--append} & Appends standard output if redirection selected.\\[1.2ex]
-\texttt{--skip=}SKIP & Select which tests should be skipped (e.g. \texttt{--skip=}test\_1,test\_2).\\[1.2ex]
+\texttt{--only=}ONLY & Select one tests to run (e.g. \texttt{--only=}cosmo7,test\_1).\\[1.2ex]
 \texttt{--update-namelist} & Use testsuite to update namelists. The tests will not be executed with this option.\\[1.2ex]
+\texttt{--force-match} & Force bit-reproducible results\\[1.2ex]
 \texttt{--update-yufiles} & Define new references by copying test output into the test reference folder. The tests will not be executed with this option.\\[1.2ex] 
 \texttt{-l} TESTLIST, & Select the xml testlist file [\texttt{testlist.xml}].\\
 \texttt{--testlist=}TESTLIST & \\[1.2ex]
@@ -102,7 +104,9 @@ Command line arguments are used to control the execution of the main \texttt{tes
 \texttt{--tuning-iterations=}ITER & Set the number of times tests should be executed. [\texttt{10}]\\[1.2ex]
 \texttt{--update-thresholds} & Update the thresholds based on the results of the current run. \\[1.2ex]
 \texttt{--reset-thresholds} & Sets all values in threshold files to 0.0 on the first run of a test\\[1.2ex]
-\end{tabular}
+\texttt{-t} TIMEOUT & Timeout in s for each test\\[1.2ex]
+\texttt{--tolerance=}TOLERANCE & Select the tolerance file name\\[1.2ex]
+\end{longtable}
 
 \section{Testsuite configuration}
 If a configuration file testsuite\_config.cfg is present in the current
@@ -161,7 +165,7 @@ The tests are defined in an XML file named \texttt{testlist.xml} which should be
  <\testlist>
 \end{verbatim}
 
-The test list is embeded within a \tl \tbf{testlist}\tg \hs tag. Each test is defined by a \tl \tbf{test}\tg  \hs tag, which has two compulsory attributes \tit{name} and \tit{type}. In the above example two tests are defined. The first test (\texttt{test\_1}) will run with namelists and reference data from the \texttt{data/cosmo7/test\_1} directory. Since the directory containing the namelists and reference data are named like the test, they do not need to be further specified. Two checkers will be run, one assuring that the simulation has run correctly and did not crash and one which will check that the results are within thresholds. The namelist parameter \texttt{hstop} is changed to stop the simulation after one hour. Test two uses the same namelists as test one but has its own reference files, thus the directories are specifically given with the optional \texttt{namelistdir} and \texttt{refoutdir} tags. Additionally, the namelist switch \texttt{lphys} is activated, in order to run with physics.
+The test list is embedded within a \tl \tbf{testlist}\tg \hs tag. Each test is defined by a \tl \tbf{test}\tg  \hs tag, which has two compulsory attributes \tit{name} and \tit{type}. In the above example two tests are defined. The first test (\texttt{test\_1}) will run with namelists and reference data from the \texttt{data/cosmo7/test\_1} directory. Since the directory containing the namelists and reference data are named like the test, they do not need to be further specified. Two checkers will be run, one assuring that the simulation has run correctly and did not crash and one which will check that the results are within thresholds. The namelist parameter \texttt{hstop} is changed to stop the simulation after one hour. Test two uses the same namelists as test one but has its own reference files, thus the directories are specifically given with the optional \texttt{namelistdir} and \texttt{refoutdir} tags. Additionally, the namelist switch \texttt{lphys} is activated, in order to run with physics.
 
 Below a list of the valid XML tags for defining a given test is given. Tags and/or attributes which are optional and need not mandatorily be specified for each test are indicated with an asterixs (*).\\
 
