@@ -34,8 +34,8 @@ def run_checker():
 
     cosmo_patterns = [
     #   Class/Type                  Name                    RegularExpression
-        WarningPattern(             "CFL pattern",          "CFL"                               ),
-        OccurrenceCrashPattern(     "Cleanup pattern",      "(.*)^(.*)CLEAN(\s)UP(.*)"          )
+        WarningPattern(             "CFL pattern",          "CFL"                       ),
+        OccurrenceCrashPattern(     "Cleanup pattern",      "(.*)^(.*)CLEAN(\s*)UP(.*)" )
     ]
     cosmo_filechecker = FileChecker()
     cosmo_filechecker.add_pattern_list(cosmo_patterns)

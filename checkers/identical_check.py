@@ -24,9 +24,6 @@ __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 
 # some global definitions
 yufile = 'YUPRTEST'   # name of special testsuite output
-yuswitch = 'lyuprdbg' # namelist switch controlling YUPRTEST output
-nlfile = 'INPUT_ORG'  # namelist file containing lyuprtest and dt
-
 
 def check():
 
@@ -39,6 +36,7 @@ def check():
     verbose = int(env['VERBOSE'])
     rundir = dir_path(env['RUNDIR'])
     refoutdir = dir_path(env['REFOUTDIR'])
+    switch = env['DT_FILE']
     tune_thresholds = env['TUNE_THRESHOLDS']
     if(str_to_bool(tune_thresholds)):
         print ("WARNING: Skipped as identical checker as it isn't usable while tuning thresholds")
@@ -48,20 +46,15 @@ def check():
     yufile1 = rundir + yufile
     yufile2 = refoutdir + yufile
 
-    # extract timestep
-    try:
-        dt = float(get_param(rundir+nlfile, 'dt'))
-    except:
-        if verbose:
-            print header+'failed to extract dt from '+rundir+nlfile
-        return 20 # FAIL
-    
-    # check if special testsuite output was actived
-    if get_param(rundir+nlfile, yuswitch) in ['.FALSE.', '.false.']:
-        if verbose:
-            print yuswitch+' is set to .false. in '+rundir+nlfile+' for this simulation'
+    if switch: # extract timestep
+        nlfile = switch  # namelist file containing dt
+        try:
+            dt = float(get_param(rundir+nlfile, 'dt'))
+        except:
+            if verbose:
+                print header+'failed to extract dt from '+rundir+nlfile
             return 20 # FAIL
-
+    
     # define tolerances for comparing YUPRTEST files
     nts = [maxsize]
     tols = [0.0]

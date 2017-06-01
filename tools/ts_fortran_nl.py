@@ -116,10 +116,10 @@ def replace_param(filename, param, newparamstr, occurrence=1):
 
     # if no return has been so far executed the code will have no significance any more
     if not possible:
-        raise SkipError('replace_param: unable to succesfully find  paramenter '+param+' into '+newparamstr)
+        raise SkipError('replace_param: unable to successfully find parameter '+param+' into '+newparamstr)
 
     if not modification:
-        raise SkipError('replace_param: unable to succesfully modify the '+occurrence+
-                        'th occurrence of paramenter '+param+' into '+newparamstr)
+        raise SkipError('replace_param: unable to successfully modify the '+occurrence+
+                        'th occurrence of parameter '+param+' into '+newparamstr)
 
 

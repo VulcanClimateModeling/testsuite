@@ -47,9 +47,12 @@ def parse_config_file(filename):
     try:
         config.read(filename)
         conf.l_files     = ast.literal_eval(config.get('ts_config','l_files'))
+        conf.nl_ts_switch= config.get('ts_config','nl_ts_switch')
+        conf.config_nl   = config.get('ts_config','config_nl')
         conf.par_file    = config.get('ts_config','par_file')
         conf.dt_file     = config.get('ts_config','dt_file')
         conf.res_file    = config.get('ts_config','res_file')
+        conf.pert_avail  = config.get('ts_config','pert_avail')
         conf.yufile      = config.get('ts_config','yufile')
         conf.dual_params = ast.literal_eval(config.get('ts_config','dual_params'))
 
@@ -81,7 +84,7 @@ def parse_cmdline():
     # defines the number of I/O processors, not a test specific option
     parser.set_defaults(nprocio=DefaultValues.nprocio)
     parser.add_option("--nprocio",type="int",dest="nprocio",
-               help="set number of aynchronous IO processor, [default=<from namelist>]")
+               help="set number of asynchronous IO processor, [default=<from namelist>]")
  
     # defines the behavior of testsuite after fail or crash
     parser.add_option("-f","--force",action="store_true",dest="force",default=False,
@@ -268,7 +271,7 @@ def main():
                     mytest.update_yufiles()
                 #
                 elif options.update_thresholds:
-                    logger.important('Updating the thresholds  on the current runs')
+                    logger.important('Updating the thresholds on the current runs')
                     mytest.options.tune_thresholds = True
                     mytest.log_file = 'exe.log'
                     mytest.check()

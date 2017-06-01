@@ -12,6 +12,11 @@
 # check environment variables
 RUNDIR=${TS_RUNDIR}
 VERBOSE=${TS_VERBOSE}
+CONFIG_NL=${TS_CONFIG_NL}
+if [ -z "${TS_CONFIG_NL}" ] ; then
+  echo "Environment variable TS_CONFIG_NL is not set" 1>&1
+  exit 20 # FAIL
+fi
 if [ -z "${VERBOSE}" ] ; then
   echo "Environment variable TS_VERBOSE is not set" 1>&1
   exit 20 # FAIL
@@ -22,6 +27,10 @@ if [ -z "${RUNDIR}" ] ; then
 fi
 if [ ! -d "${RUNDIR}" ] ; then
   echo "Directory TS_RUNDIR=${RUNDIR} does not exist" 1>&1
+  exit 20 # FAIL
+fi
+if [ ! -s "${RUNDIR}/${TS_CONFIG_NL}" ] ; then
+  echo "File ${RUNDIR}/${TS_CONFIG_NL} does not exist" 1>&1
   exit 20 # FAIL
 fi
 
@@ -46,18 +55,19 @@ function grc {
 }
 
 # determine file
-FILE="${RUNDIR}/output/lfff00000000"
+FILE="${RUNDIR}/output/l[bf]ff00000000"
+FILE=$(ls ${FILE}) # to be able to interpret regex
 
 # determine number of IO processors
 nprocio=0
-if [ -s "${RUNDIR}/YUSPECIF" ] ; then
-  nprocio=`grep nprocio ${RUNDIR}/YUSPECIF | awk '{print \$2}'`
+if [ -s "${RUNDIR}/${TS_CONFIG_NL}" ] ; then
+  nprocio=`grep nprocio ${RUNDIR}/${TS_CONFIG_NL} | awk '{print \$2}'`
 fi
 
 # cat together files if parallel grib I/O was used
 cwd=`/bin/pwd`
 if [ "${nprocio}" -gt 1 ] ; then
-  if [ -s "${FILE}_0" ]; then
+  if [ -s "(${FILE}_0)" ]; then
     cd ${RUNDIR}/output
     grc
     cd ${cwd}
@@ -65,7 +75,7 @@ if [ "${nprocio}" -gt 1 ] ; then
 fi
 
 # check presence of output file
-if [ ! -s "$FILE" ]; then
+if [ ! -s "${FILE}" ]; then
   if [ "$VERBOSE" -gt 0 ]; then
     echo "File $FILE does not exists or is zero size"
   fi
@@ -74,19 +84,19 @@ fi
 
 ## fuo: this check does not seem to be robust across platforms and grib libraries
 ##
-## # check if output file is grib
-## which od 1>/dev/null 2>/dev/null
-## if [ $? -eq 0 ] ; then
-##   hdd=`od -N 4 -c "${FILE}" 2>/dev/null | head -1 2>/dev/null | tr -d '[0-9 ]' 2>/dev/null`
-##   if [ $? -eq 0 ] ; then
-##     if [ "$hdd" != "GRIB" ] ; then
-##       if [ "$VERBOSE" -gt 0 ]; then
-##         echo "File $FILE is not GRIB format"
-##       fi
-##       exit 20 # FAIL
-##     fi
-##   fi
-## fi
+# check if output file is grib
+which od 1>/dev/null 2>/dev/null
+if [ $? -eq 0 ] ; then
+  hdd=`od -N 12 -c "${FILE}" 2>/dev/null | head -1 2>/dev/null | tr -d '[\\\\0-9HD\- ]' 2>/dev/null`
+  if [ $? -eq 0 ] ; then
+    if [ "$hdd" != "GRIB" ] ; then
+      if [ "$VERBOSE" -gt 0 ]; then
+        echo "File $FILE is not GRIB format"
+      fi
+      exit 20 # FAIL
+    fi
+  fi
+fi
 
 # goodbye
 exit 0 # MATCH

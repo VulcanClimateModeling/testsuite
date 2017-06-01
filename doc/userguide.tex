@@ -117,7 +117,7 @@ information:
 # List of INPUT namelist 
 # Should be a python list format
 l_files = ['INPUT_ORG','INPUT_ASS','INPUT_DIA','INPUT_DYN','INPUT_INI',\
-                    'INPUT_IO','INPUT_PHY','INPUT_SAT','INPUT_POL','INPUT_IDEAL']
+           'INPUT_IO','INPUT_PHY','INPUT_SAT','INPUT_POL','INPUT_IDEAL']
 # File containing the parallelisation option (nproc ...)
 par_file = INPUT_ORG
 # File containing time step information
@@ -129,6 +129,12 @@ yufile = YUPRTEST
 # List of dual parameters (which may be interchanged in the namelists)
 # Should be a python list format
 dual_params=[('nstop','hstop'),('hincrad','nincrad')]
+# Where is the namelist switch for the testsuite output
+nl_ts_switch = INPUT_DIA
+# Where are all the namelists after execution
+config_nl = YUSPECIF
+# Is a perturbation necessary
+pert_avail = True
 \end{verbatim}
 
 %---------------------------------------------------------------------
@@ -189,12 +195,17 @@ Below a list of the valid XML tags for defining a given test is given. Tags and/
 
 A checker is an external script which is called from the main testsuite program to verify the correctness of a specific test. More than one checker can be applied to an individual test. For example, the user might want to check whether the run was successful, whether output was produced and whether results are within specified thresholds. The checkers can be written in any scripting language (bash, python ...). Communication of runtime variables between the testsuite and a checker is achieved via environment variables. A checker can access a set of environment variables defined by the testsuite.\\
 
+
 \begin{tabular}{lp{10cm}}
 \texttt{TS\_BASEDIR} & Root directory of the testsuite.\\[1.2ex]
 \texttt{TS\_VERBOSE} & Verbosity level requested by the user for running the testsuite.\\[1.2ex]
 \texttt{TS\_RUNDIR} & Directory where the current test was run.\\[1.2ex]
 \texttt{TS\_LOGFILE} & File which contains the standard output and standard error of the current test.\\[1.2ex]
 \texttt{TS\_NAMELISTDIR} & Directory containing the namelist of the current test.\\[1.2ex]
+\texttt{TS\_NL\_TS\_SWITCH} & Where the namelist switch for the testsuite output is.\\[1.2ex]
+\texttt{TS\_CONFIG\_NL} & Where all the namelists are after execution.\\[1.2ex]
+\texttt{TS\_DT\_FILE} & Namelist file containing time step information.\\[1.2ex]
+\texttt{TS\_PERT\_AVAIL} & Is a perturbation necessary.\\[1.2ex]
 \texttt{TS\_REFOUTDIR} & Directory containing the reference files for the current test.\\[1.2ex]
 \texttt{TS\_TUNE\_THRESHOLDS} & Shows whether or not tuning was activated\\[1.2ex]
 \texttt{TS\_TUNING\_ITERATIONS} & Number of times each test will be executed if tuning of tolerance files is activated.\\[1.2ex]

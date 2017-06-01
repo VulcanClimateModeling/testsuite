@@ -16,3 +16,5 @@ class DefaultValues:
     reset_thresholds = False
     update_thresholds = False
     tuning_iterations = 10
+    config_nl = "OUTPUT"
+    namelist_ts_switch = "INPUT"

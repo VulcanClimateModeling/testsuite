@@ -152,6 +152,9 @@ def write_environ(test):
     """write environment variables for checkers"""
 
     os.environ['TS_BASEDIR'] = test.basedir
+    os.environ['TS_CONFIG_NL'] = test.conf.config_nl
+    os.environ['TS_NL_TS_SWITCH'] = test.conf.nl_ts_switch
+    os.environ['TS_DT_FILE'] = test.conf.dt_file
     os.environ['TS_REFOUTDIR'] = test.refoutdir
     os.environ['TS_VERBOSE'] = str(test.options.v_level)
     os.environ['TS_RUNDIR'] = test.rundir
@@ -168,6 +171,9 @@ def read_environ():
 
     environ = {}
     environ['BASEDIR'] = os.environ['TS_BASEDIR']
+    environ['CONFIG_NL'] = os.environ['TS_CONFIG_NL']
+    environ['NL_TS_SWITCH'] = os.environ['TS_NL_TS_SWITCH']
+    environ['DT_FILE'] = os.environ['TS_DT_FILE']
     environ['REFOUTDIR'] = os.environ['TS_REFOUTDIR']
     environ['VERBOSE'] = os.environ['TS_VERBOSE']
     environ['RUNDIR'] = os.environ['TS_RUNDIR']

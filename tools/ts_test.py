@@ -44,6 +44,7 @@ class Test:
         # setup of directory paths
         self.basedir = dir_path(conf.basedir)
         self.inputdir = dir_path(self.basedir + 'data/' + self.type) # set path for input directory
+
         self.rundir = dir_path(self.basedir) + dir_path(options.workdir) + dir_path(self.type) + dir_path(self.name)
         if node.findtext('namelistdir'):
             self.namelistdir = dir_path(self.basedir + 'data/' + node.findtext('namelistdir'))
@@ -333,7 +334,7 @@ class Test:
         status = system_command('/bin/rm -r -f *', self.logger)
         
         # explicit copy of the namelists (copy is required since we will apply the change_par)
-        status = system_command('/bin/cp -f '+self.namelistdir+'INPUT_* .', self.logger)
+        status = system_command('/bin/cp -f '+self.namelistdir+'INPUT* .', self.logger)
 
         # copy of the auxiliary input parameters if exists
         if not glob.glob(os.path.join(dir_path(self.inputdir)+'in_aux/', '*'))==[]:
@@ -402,8 +403,9 @@ class Test:
     
     def __set_pert(self):
         """set perturbation in the parameter file to true or false depending on the given option"""
-        pert = self.options.pert
-        replace_param(self.conf.par_file,'itype_pert',' itype_pert = %i' %pert)
+        if self.conf.pert_avail == 'True':
+             pert = self.options.pert
+             replace_param(self.conf.par_file,'itype_pert',' itype_pert = %i' %pert)
 
     def __set_parallelization(self):
 
@@ -413,9 +415,9 @@ class Test:
         if self.options.nprocio is not None:
             nprocio = self.options.nprocio
         else:
-            if get_param(self.conf.par_file,'num_iope_percomm') != '':    
-               num_iope_percomm = int(get_param(self.conf.par_file,'num_iope_percomm'))      
-               num_asynio_comm = int(get_param(self.conf.par_file,'num_asynio_comm')) 
+            if get_param(self.conf.par_file,'num_iope_percomm') != '':
+               num_iope_percomm = int(get_param(self.conf.par_file,'num_iope_percomm'))
+               num_asynio_comm = int(get_param(self.conf.par_file,'num_asynio_comm'))
                nprocio = num_asynio_comm * num_iope_percomm
             else:
                nprocio = int(get_param(self.conf.par_file,'nprocio'))
@@ -481,7 +483,7 @@ class Test:
         # sort parlist by aspect ratio of solutions
         parlist = sorted(parlist, key=lambda tuple: aspect_ratio(tuple[0],tuple[1]))
 
-        ## # swap parlist[0] and parlist[-2]  so that nxy,1 is not the first parllelization
+        ## # swap parlist[0] and parlist[-2] so that nxy,1 is not the first parallelization
         ## if len(parlist)>1:
         ##     par_tmp = parlist[0]
         ##     parlist[0] = parlist[-2]

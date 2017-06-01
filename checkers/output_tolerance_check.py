@@ -26,11 +26,7 @@ __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 # some global definitions
 yufile   = 'YUCHKDAT'    # name of special testsuite output
 yuswitch = 'lcheck'      # namelist switch controlling YUPRDBG output
-lnout    = 'ngribout'    # namelist entry which specifies the nr ouf output lists
-nlfile  = 'INPUT_IO'    # namelist file containing yuswitch
-nlfile2 = 'INPUT_ORG'    # namelist file containing dt
-
-
+lnout    = 'ngribout'    # namelist entry which specifies the nr of output lists
 
 def check():
 
@@ -44,6 +40,7 @@ def check():
     rundir = dir_path(env['RUNDIR'])
     refoutdir = dir_path(env['REFOUTDIR'])
     namelistdir = dir_path(env['NAMELISTDIR'])
+    switch = env['DT_FILE']
     tolerance = env['TOLERANCE']
     forcematch = int(env['FORCEMATCH']) == 1
 
@@ -51,27 +48,33 @@ def check():
     yufile1 = rundir + yufile
     yufile2 = refoutdir + yufile
 
-    # extract timestep
-    try:
-        dt = float(get_param(rundir+nlfile2, 'dt'))
-    except:
-        if verbose:
-            print header+'failed to extract dt from '+rundir+nlfile
-        return 20 # FAIL
+    if not switch: # no need to extract timestep and to check output lists
+        nlfile  = env['NL_TS_SWITCH']
+    else:
+        nlfile  = 'INPUT_IO'    # namelist file containing yuswitch
+        nlfile2 = 'INPUT_ORG'   # namelist file containing dt
 
-    # check for output lists
-    try:
-        nout_list = get_param(rundir+nlfile, lnout)
-    except:
-        if verbose:
-            print header+'no output lists in '+rundir+nlfile
-        return 20 # FAIL
+        # extract timestep
+        try:
+            dt = float(get_param(rundir+nlfile2, 'dt'))
+        except:
+            if verbose:
+                print header+'failed to extract dt from '+rundir+nlfile2
+            return 20 # FAIL
 
-    # check if special testsuite output was activated in every output list
-    if get_param(rundir+nlfile, yuswitch, occurrence=nout_list) in ['.FALSE.', '.false.']:
-        if verbose:
-            print yuswitch+' is set to .false. in '+rundir+nlfile+' for this simulation'
-        return 20 # FAIL
+        # check for output lists
+        try:
+            nout_list = get_param(rundir+nlfile, lnout)
+        except:
+            if verbose:
+                print header+'no output lists in '+rundir+nlfile
+            return 20 # FAIL
+    
+        # check if special testsuite output was activated in every output list
+        if get_param(rundir+nlfile, yuswitch, occurrence=nout_list) in ['.FALSE.', '.false.']:
+            if verbose:
+                print yuswitch+' is set to .false. in '+rundir+nlfile+' for this simulation'
+            return 20 # FAIL
 
     #check if tolerance file exists in namelistdir
     tolerance_path=namelistdir + tolerance
@@ -101,7 +104,7 @@ def check():
         except:
             if verbose:
                 print header+'Error while reading '+tolerance_file
-                print header+'Cannot read one of the follwoing parameter: tol_times,tol_out,minval'
+                print header+'Cannot read one of the following parameter: tol_times,tol_out,minval'
             return 20 # FAIL
     else:
         if verbose>1:

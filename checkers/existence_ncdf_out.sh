@@ -24,7 +24,7 @@ if [ ! -d "${RUNDIR}" ] ; then
   exit 20 # FAIL
 fi
 
-FILELIST=$(ls -1 ${RUNDIR}/output/lff*00.nc 2>/dev/null)
+FILELIST=$(ls -1 ${RUNDIR}/output/l[bf]f*00.nc 2>/dev/null)
 if [ $? -ne 0 ] ; then
   echo "No netCDF output file found"  1>&1
   exit 20 # FAIL
