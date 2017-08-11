@@ -54,9 +54,10 @@ function grc {
   fi
 }
 
-# determine file
-FILE="${RUNDIR}/output/l[bf]ff00000000"
-FILE=$(ls ${FILE}) # to be able to interpret regex
+# Regex pattern to match:
+REGEX=".+\/l[bf]ff0+\(_0\)?"
+# Use find to find the file 
+FILE=$(find ${RUNDIR}/output -regex "${REGEX}") 
 
 # determine number of IO processors
 nprocio=0
@@ -67,12 +68,15 @@ fi
 # cat together files if parallel grib I/O was used
 cwd=`/bin/pwd`
 if [ "${nprocio}" -gt 1 ] ; then
-  if [ -s "(${FILE}_0)" ]; then
+  # Check if the file ends with _0. These filese need to be concatenated
+  if [[ "${FILE}" =~ [A-Za-z\/0-9]+_0 ]]; then
     cd ${RUNDIR}/output
     grc
     cd ${cwd}
   fi
 fi
+# Search for the file again, because grc might have renamed the file
+FILE=$(find ${RUNDIR}/output -regex "${REGEX}") 
 
 # check presence of output file
 if [ ! -s "${FILE}" ]; then
