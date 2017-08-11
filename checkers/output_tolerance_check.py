@@ -12,10 +12,10 @@ import os, sys
 
 # private modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "../tools"))
-from ts_utilities import read_environ, dir_path
+from ts_utilities import read_environ, dir_path, str_to_bool
 from ts_fortran_nl import get_param
 from sys import maxsize
-import comp_yuchkdat
+import ts_yuchdat
 import ts_thresholds
 
 # information
@@ -43,7 +43,8 @@ def check():
     switch = env['DT_FILE']
     tolerance = env['TOLERANCE']
     forcematch = int(env['FORCEMATCH']) == 1
-
+    tune_thresholds = str_to_bool(env['TUNE_THRESHOLDS'])
+    
     # defines the 2 file that belongs logically to the checker
     yufile1 = rundir + yufile
     yufile2 = refoutdir + yufile
@@ -85,6 +86,14 @@ def check():
         tolerance_file=''
         ltol_file=False
 
+    # Create Thresholds object
+    thres = """
+ minval = 1e-12
+  steps =         1        20         60        100
+      * =   1.00e-7   1.00e-4   1.00e-06   1.00e-02
+"""
+    threshold = ts_thresholds.Thresholds(thres)
+    threshold_var = '*'
     # define tolerances for comparing YUCHKDAT files
     # Use tolerance file if exists
     if ltol_file:
@@ -94,66 +103,47 @@ def check():
             print header + 'Using tolerance values from file '+tolerance_file
         try:
             threshold = ts_thresholds.Thresholds(tolerance_file)
-            threshold_dict = threshold.to_dict()
-            if "CHKDAT" in threshold_dict.keys():
-                tol_out  = threshold_dict["CHKDAT"]
-            else:
-                tol_out = threshold_dict["*"]
-            tol_times  = threshold_dict["steps"]
-            minval = threshold_dict["minval"]
+            if "CHKDAT" in threshold.variables:
+                threshold_var = "CHKDAT"
         except:
             if verbose:
                 print header+'Error while reading '+tolerance_file
                 print header+'Cannot read one of the following parameter: tol_times,tol_out,minval'
             return 20 # FAIL
-    else:
-        if verbose>1:
-            print header + 'Using default tolerance values'
+    
+    # Identical thresholds
 
-        tol_times = [1200,2400,4000]      # time limit for tolerance setting in seconds
-        tol_out  = [1.0e-7,1.0e-4,1.0e-0] # tolerance threshold for all other prognostic fields
-        minval   = 1.0e-9                 # values below min val are not considered
+    thres = """
+ minval = 0.0
+  steps =   0
+      * =   0
+"""
+    threshold_identical = ts_thresholds.Thresholds(thres)
 
     # Override the tolerances in case FORCEMATCH is enabled
     if forcematch:
-        tol_times = [maxsize]
-        tol_out   = [0.0]
-        minval    = 0.0
-
-    #set tolerance time step index
+        threshold = threshold_identical
 
     try:
         # check for bit identical results
         if verbose>1:
             print header + 'Checking first if results are bit identical'
-        if verbose>2:
-            print header + 'comp_yuprtest()'
-            print header + '  file1 = '+yufile1
-            print header + '  file2 = '+yufile2
-            print header + '  minval = '+str(-1)
-            print header + '  nts = [%s]' % ','.join(map(str, [maxsize]))
-            print header + '  tol_temp = [%s]' % ','.join(map(str, [0.0]))
-            print header + '  tol_out = [%s]' % ','.join(map(str, [0.0]))
-        err_count_identical = comp_yuchkdat.cmp_(yufile1, yufile2, -1, -1, [0.0], [0.0])
+        err_count_identical = ts_yuchdat.compare(yufile1, yufile2, threshold_identical, threshold_var, v_level=-1)
+        
         if verbose>1:
             if err_count_identical==0:
                 print header + 'Results are bit identical'
             else:
                 print header + 'Results are not bit identical'
+        
         # check if results are within tolerance values
         if verbose>1:
             print header + 'Checking if results are within tolerance'
-            print header + '  minimal value : %s' %(minval)
-            print header + '  tolerance time : %s' % ','.join(map(str, tol_times))
-            print header + '  thresholds for all output fields: %s' % ','.join(map(str, tol_out))
-        if verbose>2:
-            print header + 'comp_yuprtest()'
-            print header + '  file1 = '+yufile1
-            print header + '  file2 = '+yufile2
-            print header + '  minval = '+str(minval)
-            print header + '  nts = [%s]' % ','.join(map(str, tol_times))
-            print header + '  tol_out = [%s]' % ','.join(map(str, tol_out))
-        error_count = comp_yuchkdat.cmp_(yufile1, yufile2, 0, minval, tol_times, tol_out)
+        
+        error_count = ts_yuchdat.compare(yufile1, yufile2, threshold, threshold_var, tune_thresholds, v_level=0)
+        
+        if (tune_thresholds):
+            threshold.to_file(tolerance_path)
         if verbose>1:
             if error_count==0:
                 print header + 'Results are within thresholds'

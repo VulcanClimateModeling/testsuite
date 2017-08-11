@@ -325,8 +325,6 @@ class Compare(object):
         # Set the default threshold to the maximum of all the variables
         self._threshold.update_default_thresholds()
         
-        print self._threshold.minval
-
     def write_threshold_to_file(self, file_location):
         self._threshold.to_file(file_location)
 
