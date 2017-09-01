@@ -91,7 +91,7 @@ fi
 # check if output file is grib
 which od 1>/dev/null 2>/dev/null
 if [ $? -eq 0 ] ; then
-  hdd=`od -N 12 -c "${FILE}" 2>/dev/null | head -1 2>/dev/null | tr -d '[\\\\0-9HD\- ]' 2>/dev/null`
+  hdd=`od -N 12 -c "${FILE}" 2>/dev/null | head -1 2>/dev/null | sed 's/.*G *R *I *B.*/GRIB/' 2>/dev/null`
   if [ $? -eq 0 ] ; then
     if [ "$hdd" != "GRIB" ] ; then
       if [ "$VERBOSE" -gt 0 ]; then
