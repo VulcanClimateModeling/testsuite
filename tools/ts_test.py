@@ -426,8 +426,11 @@ class Test:
         if get_param(self.conf.par_file,'num_iope_percomm') != '':
            if nprocio == 0:
               replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm= 0')
+              replace_param(self.conf.io_file,'lasync_io',' lasync_io=.FALSE.')
+
            else:   
               replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm= 1')
+              replace_param(self.conf.io_file,'lasync_io',' lasync_io=.TRUE.')
            replace_param(self.conf.par_file,'num_asynio_comm',' num_asynio_comm= %i' %nprocio)
         else:
            replace_param(self.conf.par_file,'nprocio',' nprocio= %i' %nprocio)
