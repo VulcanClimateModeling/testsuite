@@ -2,9 +2,17 @@
 
 # COSMO TECHNICAL TESTSUITE
 #
+# Software dependencies:
+#
+# - to be run from the bourne shell
+# - CDO (Climate Data Operators, <http://code.zmaw.de/projects/cdo>) 
+#   Version 1.5 needed for GRIB files!
+#   CDO needs to be built with GRIB and/or netCDF support
 # This script checks whether the content of NetCDF/GRIB files is identical
 # David Leutwyler, October 2017
 
+#Software
+cdo=/apps/dom/UES/jenkins/6.0.UP04/gpu/easybuild/software/CDO/1.9.0-CrayGNU-17.08/bin/cdo
 
 # check environment variables
 RUNDIR=${TS_RUNDIR}
