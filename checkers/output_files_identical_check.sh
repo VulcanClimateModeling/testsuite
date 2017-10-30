@@ -2,7 +2,8 @@
 
 # COSMO TECHNICAL TESTSUITE
 #
-# This script checks whether the content of NetCDF files is identical
+# This script checks whether the content of NetCDF/GRIB files is identical
+# David Leutwyler, October 2017
 
 
 # check environment variables
