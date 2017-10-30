@@ -46,7 +46,7 @@ if [ $? -ne 0 ] ; then
 fi
 
 for f in `ls ${RUNDIR}/output/*.nc | xargs -n 1 basename` ; do
-  DIFF=$(cdo -s diff ${RUNDIR}/output/${f} ${REFOUTDIR}/output/${f})
+  DIFF=$(cdo -s diffv ${RUNDIR}/output/${f} ${REFOUTDIR}/output/${f})
   if [ ! -z $DIFF ] ; then
     echo $DIFF  1>&1
     exit 20 # FAIL
