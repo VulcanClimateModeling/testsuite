@@ -45,7 +45,8 @@ if [ $? -ne 0 ] ; then
   exit 20 # FAIL
 fi
 
-for f in `ls ${RUNDIR}/output/*.nc | xargs -n 1 basename` ; do
+REGEX='^.*lff[fd][0-9]+[a-zA-Z]{0,1}(.nc){0,1}' #Find NetCDF and GRIB files, based on name
+for f in `find ${RUNDIR}/output -regextype posix-extended -regex $REGEX` ; do
   DIFF=$(cdo -s diffv ${RUNDIR}/output/${f} ${REFOUTDIR}/output/${f})
   if [ ! -z $DIFF ] ; then
     echo $DIFF  1>&1
