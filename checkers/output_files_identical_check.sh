@@ -42,21 +42,24 @@ if [ ! -d "${REFOUTDIR}" ] ; then
   exit 20 # FAIL
 fi
 
-FILELIST=$(ls -1 ${RUNDIR}/output/l[bf]f*00.nc 2>/dev/null)
-if [ $? -ne 0 ] ; then
-  echo "No netCDF output file found in " ${RUNDIR}  1>&1
+#Regular expression tagging NetCDF and GRIB output files based on their name, but not binary restart
+REGEXP='^.*lff[fd][0-9]+[a-zA-Z]{0,1}(.nc){0,1}'
+
+FILELIST=$(find ${RUNDIR}/output -regextype posix-extended -regex $REGEXP)
+if [ -z "$FILELIST" ] ; then
+  echo "No NetCDF/GRIB output file found in " ${RUNDIR}  1>&1
   exit 20 # FAIL
 fi
 
-FILELIST=$(ls -1 ${REFOUTDIR}/output/l[bf]f*00.nc 2>/dev/null)
-if [ $? -ne 0 ] ; then
-  echo "No netCDF output file found in " ${REFOUTDIR}  1>&1
+FILELIST=$(find ${REFOUTDIR}/output -regextype posix-extended -regex $REGEXP)
+if [ -z "$FILELIST" ] ; then
+  echo "No NetCDF/GRIB output file found in " ${REFOUTDIR}  1>&1
   exit 20 # FAIL
 fi
 
-REGEX='^.*lff[fd][0-9]+[a-zA-Z]{0,1}(.nc){0,1}' #Find NetCDF and GRIB files, based on name
-for f in `find ${RUNDIR}/output -regextype posix-extended -regex $REGEX` ; do
-  DIFF=$(cdo -s diffv ${RUNDIR}/output/${f} ${REFOUTDIR}/output/${f})
+cd ${RUNDIR}
+for f in $(find output -regextype posix-extended -regex $REGEXP) ; do
+  DIFF=$($cdo -s diffv ${RUNDIR}/${f} ${REFOUTDIR}/${f}) 1>&1
   if [ ! -z $DIFF ] ; then
     echo $DIFF  1>&1
     exit 20 # FAIL
