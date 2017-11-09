@@ -7,7 +7,7 @@ Various tools used to read and modify fortran namelists
 """
 
 # built-in modules
-import os, sys, string, re
+import os, sys, re
 from ts_error import StopError, SkipError
 
 # information
@@ -111,7 +111,7 @@ def replace_param(filename, param, newparamstr, occurrence=1):
         new_data.append(line+line_c+'\n')
                              
     fout = open(filename,'w')
-    fout.write(string.join(new_data,''))
+    fout.write(''.join(new_data))
     fout.close
 
     # if no return has been so far executed the code will have no significance any more
