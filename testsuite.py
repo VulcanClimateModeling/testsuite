@@ -51,6 +51,7 @@ def parse_config_file(filename):
         conf.config_nl   = config.get('ts_config','config_nl')
         conf.par_file    = config.get('ts_config','par_file')
         conf.dt_file     = config.get('ts_config','dt_file')
+        conf.io_file     = config.get('ts_config','io_file')
         conf.res_file    = config.get('ts_config','res_file')
         conf.pert_avail  = config.get('ts_config','pert_avail')
         conf.yufile      = config.get('ts_config','yufile')
