@@ -229,7 +229,7 @@ class Compare(object):
         (var, step, level, minval1, maxval1, meanval1) = ref
         (var2, step2, level2, minval2, maxval2, meanval2) = data
         if (var, step, level) != (var2, step2, level2):
-            raise ValueError('Non-matching data entries cannot be compared on line' + self._lineno)
+            raise ValueError('Non-matching data entries cannot be compared on line' + str(self._lineno))
         (status1, diff1, thresh) = self.__compare_values(var, step, minval1, minval2)
         (status2, diff2, thresh) = self.__compare_values(var, step, maxval1, maxval2)
         (status3, diff3, thresh) = self.__compare_values(var, step, meanval1, meanval2)
