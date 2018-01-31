@@ -7,7 +7,7 @@ General purpose script to compare two YUCHKDAT output files
 """
 
 # built-in modules
-import os, sys, string, bisect
+import os, sys, string, bisect, math
 
 # information
 __author__     = "Xavier Lapillonne"
@@ -143,9 +143,9 @@ def compare(file1,file2, thresholds, threshold_var='*', update_thresholds=False,
                     ldiff=0
  
             #check if larger than tol        
-            if (ldiff>tol):
+            if (ldiff>tol or math.isnan(ldiff)):
                 error_count+=1
-                if (ldiff > maxdiff):
+                if (ldiff > maxdiff or math.isnan(ldiff)):
                     maxdiff=ldiff
                     maxdiff_line=i+1
                     maxdiff_step=step
@@ -200,14 +200,13 @@ def isValidLine(Line,n,rList):
     return test
     
             
-
 # test a string and return true if it can be converted
 # to float and if it is not a integer : must contain a "."
 #
 def isReal(string):
     try:
         a=float(string)
-        if "." in string:
+        if ("." in string or math.isinf(a)):
             test=True
         else:
             test=False

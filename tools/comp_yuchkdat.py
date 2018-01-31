@@ -7,7 +7,7 @@ General purpose script to compare two YUCHKDAT output files
 """
 
 # built-in modules
-import os, sys, string, bisect
+import os, sys, string, bisect, math
 
 # information
 __author__     = "Xavier Lapillonne"
@@ -153,9 +153,9 @@ def cmp_(file1,file2, \
                     ldiff=0
  
             #check if larger than tol        
-            if (ldiff>tol):
+            if (ldiff>tol or math.isnan(ldiff)):
                 error_count+=1
-                if (ldiff > maxdiff):
+                if (ldiff > maxdiff or math.isnan(ldiff)):
                     maxdiff=ldiff
                     maxdiff_line=i+1
                     maxdiff_step=step
@@ -216,7 +216,7 @@ def isValidLine(Line,n,rList):
 def isReal(string):
     try:
         a=float(string)
-        if "." in string:
+        if ("." in string or math.isinf(a)):
             test=True
         else:
             test=False
