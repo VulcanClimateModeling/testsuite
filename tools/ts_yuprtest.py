@@ -80,7 +80,7 @@ class Yuprtest(object):
             self._headerlines += 1
             return None
         if (len(data) != 10):
-            raise ValueError('Strange record found in ' + self.filename_ +
+            raise ValueError('Strange record found in ' + self._filename +
                             ' on line number ' + str(lineno))
         data.pop(8)  # remove j-position of maximum
         data.pop(7)  # remove i-position of maximum
