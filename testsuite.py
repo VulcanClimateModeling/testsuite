@@ -29,7 +29,7 @@ from default_values import DefaultValues
 __author__     = "Nicolo Lardelli, Xavier Lapillonne, Oliver Fuhrer, Santiago Moreno"
 __copyright__  = "Copyright 2012-2017, COSMO Consortium"
 __license__    = "MIT"
-__version__    = "2.2.1"
+__version__    = "2.2.2"
 __date__       = "December 14, 2017"
 __email__      = "cosmo-wg6@cosmo.org"
 __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
