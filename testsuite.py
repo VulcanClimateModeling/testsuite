@@ -27,10 +27,10 @@ from default_values import DefaultValues
 
 # information
 __author__     = "Nicolo Lardelli, Xavier Lapillonne, Oliver Fuhrer, Santiago Moreno"
-__copyright__  = "Copyright 2012-2017, COSMO Consortium"
+__copyright__  = "Copyright 2012-2018, COSMO Consortium"
 __license__    = "MIT"
-__version__    = "2.2.2"
-__date__       = "December 14, 2017"
+__version__    = "2.2.3"
+__date__       = "3.10.2018"
 __email__      = "cosmo-wg6@cosmo.org"
 __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 
@@ -136,8 +136,11 @@ def parse_cmdline():
                help="Use Testsuite to update namelists (no tests executed)")
 
     # force bit-reproducible results
-    parser.add_option("--force-match",dest="forcematch",action="store_true",default=(DefaultValues.forcematch == 1),
+    parser.add_option("--force-match",dest="forcematch",action="store_true",default=DefaultValues.forcematch,
                help="Force bit-reproducible results")
+
+    parser.add_option("--force-match-base",dest="forcematch_base",action="store_true",default=DefaultValues.forcematch_base,
+               help="Force bit-reproducible results only for base tests, i.e. those with name matching test in data/ folder")
 
     parser.add_option("--tune-thresholds",dest="tune_thresholds",action="store_true",default=DefaultValues.tune_thresholds,
                help="Change thresholds to always at least return OK")
@@ -179,12 +182,6 @@ def parse_cmdline():
         (options,args)=parser.parse_args()
     except (OP.OptionError,TypeError):
         sys.exit("problem parsing command line arguments (check ./testsuite.py -h for valid arguments)")
-
-    # convert forcematch options from logical to integer
-    if options.forcematch:
-        options.forcematch = 1
-    else:
-        options.forcematch = 0
 
     return options
 

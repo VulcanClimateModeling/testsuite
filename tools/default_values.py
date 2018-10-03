@@ -11,7 +11,8 @@ class DefaultValues:
     testlist = "testlist.xml"
     tolerance = "TOLERANCE"
     timeout  = None
-    forcematch = 0
+    forcematch = False
+    forcematch_base = False
     tune_thresholds = False
     reset_thresholds = False
     update_thresholds = False

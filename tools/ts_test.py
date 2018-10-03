@@ -225,8 +225,21 @@ class Test:
         checkerlist = []
         checker_nodes = self.node.findall("checker")
         for el in checker_nodes:
-            checkerlist.append(el.text)   
+            checkerlist.append(el.text)
 
+        # set force match if required
+        if self.options.forcematch_base:
+            # only base test, i.e. where test name is the same as self.namelistdir
+            pattern = '(.*)/'+self.type+'/'+self.name+'(.*)'
+            if re.match(pattern,self.namelistdir):
+                self.forcematch=1
+            else:
+                self.forcematch=0
+        elif self.options.forcematch:
+            self.forcematch=1
+        else:
+            self.forcematch=0
+            
         # assignement of the environment variables for checker
         write_environ(self)
 
@@ -300,10 +313,10 @@ class Test:
         
 
         pattern = '(.*)/'+self.type+'/'+self.name+'(.*)'
-        # only update those test where self.refoutdir=self.namelistdir
+        # only update base test, i.e. where test name is the same as self.namelistdir
         text = self.namelistdir
 
-        # checks if is the test is a titular test
+        # checks if is the test is a base test
         if re.match(pattern,text):
             status = change_dir(self.rundir, self.logger)
             if not os.path.exists(self.conf.yufile):
