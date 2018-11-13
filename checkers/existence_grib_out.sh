@@ -62,7 +62,7 @@ FILE=$(find ${RUNDIR}/output -regex "${REGEX}")
 # determine number of IO processors
 nprocio=0
 if [ -s "${RUNDIR}/${TS_CONFIG_NL}" ] ; then
-  nprocio=`grep nprocio ${RUNDIR}/${TS_CONFIG_NL} | awk '{print \$2}'`
+  nprocio=`grep -w nprocio ${RUNDIR}/${TS_CONFIG_NL} | awk '{print \$2}'`
 fi
 
 # cat together files if parallel grib I/O was used
