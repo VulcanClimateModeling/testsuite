@@ -36,17 +36,17 @@ fi
 
 # function to cat together files (from parallel grib output)
 function grc {
-  files=`find * -maxdepth 0 -print | grep '.*_[0-9]$' | sed 's/_[0-9]$//g' | sort | uniq`
+  files=`find * -maxdepth 0 -print | grep '.*_[0-9]*' | sed 's/_[0-9]*//g' | sort | uniq`
   if [ ! -z "$files" ] ; then
     # cat the files together
     for thef in $files ; do
       # concat the files
-      /bin/cat ${thef}_[0-9] > ${thef}
+      /bin/cat ${thef}_[0-9]* > ${thef}
       # check the file size
-      totsiz=`stat -c '%s' ${thef}_[0-9] | awk '{sum=sum+$1;print sum}' | tail -1`
+      totsiz=`stat -c '%s' ${thef}_[0-9]* | awk '{sum=sum+$1;print sum}' | tail -1`
       catsiz=`stat -c '%s' ${thef}`
       if [ $totsiz -eq $catsiz ] ; then
-        /bin/rm -f ${thef}_[0-9]
+        /bin/rm -f ${thef}_[0-9]*
       else
         echo "Size check mismatch for ${thef}!!!"
       fi
@@ -55,8 +55,7 @@ function grc {
 }
 
 # Regex pattern to match:
-REGEX=".+\/l[bf]ff0+\(_0\)?"
-# Use find to find the file 
+REGEX=".+\/l[bf]ff0.*+\(_0\)?"
 FILE=$(find ${RUNDIR}/output -regex "${REGEX}") 
 
 # determine number of IO processors
@@ -76,7 +75,7 @@ if [ "${nprocio}" -gt 1 ] ; then
   fi
 fi
 # Search for the file again, because grc might have renamed the file
-FILE=$(find ${RUNDIR}/output -regex "${REGEX}") 
+FILE=$(find ${RUNDIR}/output -regex "${REGEX}" | head -n 1) 
 
 # check presence of output file
 if [ ! -s "${FILE}" ]; then
