@@ -44,6 +44,7 @@ def check():
     tune_thresholds = str_to_bool(env['TUNE_THRESHOLDS'])
     tune_times = int(env['TUNING_ITERATIONS'])
     reset_thresholds = str_to_bool(env['RESET_THRESHOLDS'])
+    icon = str_to_bool(env['ICON']) 
 
     #check if namelist file with switch exists in namelistdir
     switch_path = namelistdir + switch
@@ -56,10 +57,11 @@ def check():
     yufile1 = rundir + yufile
     yufile2 = refoutdir + yufile
     # check if special testsuite output was activated
-    if get_param(rundir+switch, yuswitch) in ['.FALSE.', '.false.']:
-        if verbosity:
-            print yuswitch +' is set to .false. in '+ rundir + switch +' for this simulation'
-        return 20 # FAIL
+    if not icon:
+       if get_param(rundir+switch, yuswitch) in ['.FALSE.', '.false.']:
+          if verbosity:
+             print yuswitch +' is set to .false. in '+ rundir + switch +' for this simulation'
+          return 20 # FAIL
 
     #check if tolerance file exists in namelistdir or type dir
     tolerance_path = namelistdir + tolerance

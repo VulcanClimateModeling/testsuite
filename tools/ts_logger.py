@@ -72,8 +72,6 @@ class MyFormatter(LG.Formatter):
 class Logger:
     """simple logger which is used throughout the testsuite"""
 
-    color = True
-
     def __init__(self, filename, append=False, color=False):
         self.filename = filename
         if append:
@@ -89,6 +87,7 @@ class Logger:
         self.handler.setFormatter(self.formatter)
         self.logger.addHandler(self.handler)
         self.logger.setLevel(INFO)
+        self.color = color
   
     def __del__(self):
         LG.shutdown()
@@ -122,7 +121,7 @@ class Logger:
   
     def result(self, indent, status, msg, *args, **kwargs):
         slen = len(status_str(status))
-        status = pretty_status_str(status, Logger.color, indent==0)
+        status = pretty_status_str(status, self.color, indent==0)
         pad = STAT_COLUMN - slen - 2*indent
         prefix=' '*(2*indent) + '[' + ' '*(pad/2) + status + ' '*(pad-pad/2) + '] '
         self.log(IMPORTANT, prefix + msg, *args, **kwargs)

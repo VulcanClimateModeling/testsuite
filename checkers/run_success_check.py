@@ -14,7 +14,7 @@ the tuple patternlist contains all the patterns.
 import os, sys
 # private modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "../tools"))  # this is the generic folder for subroutines
-from ts_utilities import read_environ, dir_path
+from ts_utilities import read_environ, dir_path, str_to_bool
 from filechecker import *
 
 # information
@@ -28,17 +28,26 @@ def run_checker():
     verbose = int(env['VERBOSE'])
     rundir = env['RUNDIR']
     log_output = env['LOGFILE']
+    icon = str_to_bool(env['ICON'])
+
     # construct stdout filename
     working_dir = dir_path(rundir).replace("./", "", 1) 
     logfile = os.path.join(working_dir, log_output)
 
-    cosmo_patterns = [
-    #   Class/Type                  Name                    RegularExpression
-        WarningPattern(             "CFL pattern",          "CFL"                       ),
-        OccurrenceCrashPattern(     "Cleanup pattern",      "(.*)^(.*)CLEAN(\s*)UP(.*)" )
-    ]
+    if icon:
+        patterns = [
+        #   Class/Type                  Name                    RegularExpression
+            OccurrenceCrashPattern(     "Cleanup pattern",      "0")
+        ]
+    else:
+        patterns = [
+        #   Class/Type                  Name                    RegularExpression
+            WarningPattern(             "CFL pattern",          "CFL"                       ),
+            OccurrenceCrashPattern(     "Cleanup pattern",      "(.*)^(.*)CLEAN(\s*)UP(.*)" )
+        ]
+
     cosmo_filechecker = FileChecker()
-    cosmo_filechecker.add_pattern_list(cosmo_patterns)
+    cosmo_filechecker.add_pattern_list(patterns)
     return cosmo_filechecker.check(logfile, verbose)
 
 if __name__ == "__main__":
