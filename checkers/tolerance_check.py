@@ -24,7 +24,6 @@ __email__       = "cosmo-wg6@cosmo.org"
 __maintainer__  = "xavier.lapillonne@meteoswiss.ch"
 
 # some global definitions
-yufile = 'YUPRTEST'     # name of special testsuite output
 yuswitch = 'ltestsuite' # namelist switch controlling YUPRTEST output
 
 def check():
@@ -44,7 +43,8 @@ def check():
     tune_thresholds = str_to_bool(env['TUNE_THRESHOLDS'])
     tune_times = int(env['TUNING_ITERATIONS'])
     reset_thresholds = str_to_bool(env['RESET_THRESHOLDS'])
-    icon = str_to_bool(env['ICON']) 
+    icon = str_to_bool(env['ICON'])
+    yufile = env['YUFILE']
 
     #check if namelist file with switch exists in namelistdir
     switch_path = namelistdir + switch

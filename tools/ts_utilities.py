@@ -166,6 +166,7 @@ def write_environ(test):
     os.environ['TS_TUNE_THRESHOLDS'] = str(test.options.tune_thresholds)
     os.environ['TS_RESET_THRESHOLDS'] = str(test.options.reset_thresholds)
     os.environ['TS_ICON'] = str(test.options.icon)
+    os.environ['TS_YUFILE'] = test.conf.yufile
 
 def read_environ():
     """read environment variables and store into local map"""
@@ -186,6 +187,7 @@ def read_environ():
     environ['TUNE_THRESHOLDS'] = os.environ['TS_TUNE_THRESHOLDS']
     environ['RESET_THRESHOLDS'] = os.environ['TS_RESET_THRESHOLDS']
     environ['ICON'] = os.environ['TS_ICON']
+    environ['YUFILE'] = os.environ['TS_YUFILE']
     return environ
 
 def str_to_bool(str):
