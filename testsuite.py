@@ -54,7 +54,7 @@ def parse_cmdline():
 
     # read default values
     with open(os.path.join(os.path.dirname(__file__), 'conf', 'defaults.yaml')) as f:
-        data = yaml.load(f, Loader=yaml.FullLoader)
+        data = yaml.load(f)
     defaults = objectview(data)
 
     # the parser is initialized with its description and its epilog
