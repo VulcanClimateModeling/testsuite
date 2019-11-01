@@ -355,9 +355,10 @@ class Test:
 
         # linking input binary fields
         status = system_command('/bin/ln -s '+dir_path(self.inputdir)+'input '+self.conf.indir_link, self.logger)
-        
+
         # generation of the output folder
-        status = system_command('/bin/mkdir -p output', self.logger)
+        for outdir in self.conf.outdir_name:
+            status = system_command('/bin/mkdir -p '+outdir, self.logger)
 
 
     def __setup_executable(self):

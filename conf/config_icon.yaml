@@ -9,6 +9,9 @@ nml_wildcard:
 # input dir link name (use . for same as in data dir)
 indir_link: '.'
 
+# name of output directories to create
+outdir_name: []
+
 # list of input namelists
 l_files: []
 
