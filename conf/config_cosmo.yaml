@@ -1,11 +1,31 @@
 # testsuite configuration for COSMO model
+
+# list of input namelists
 l_files: [INPUT_ORG,INPUT_ASS,INPUT_DIA,INPUT_DYN,INPUT_INI,INPUT_IO,INPUT_PHY,INPUT_SAT,INPUT_POL,INPUT_IDEAL]
+
+# file containing the parallization options (nproc ...)
 par_file: INPUT_ORG
+
+# file containing time step information
 dt_file: INPUT_ORG
+
+# file containing the lasync_io flag
 io_file: INPUT_IO
+
+# file containing the test result
 res_file: TEST_RES
+
+# file use for the tolerance checker
 yufile: YUPRTEST
+
+# list of dual parameters (which may be interchanged in the namelists)
 dual_params: [[nstop,hstop],[hincrad,nincrad]]
+
+# which namelist file contains switch to activate testsuite output
 nl_ts_switch: INPUT_DIA
+
+# where are all namelists echoed after execution
 config_nl: YUSPECIF
+
+# is preturbation necessary
 pert_avail: True

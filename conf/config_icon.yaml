@@ -1,11 +1,31 @@
 # testsuite configuration for ICON model
+
+# list of input namelists
 l_files: []
+
+# file containing the parallization options (nproc ...)
 par_file: 
+
+# file containing time step information
 dt_file: 
+
+# file containing the lasync_io flag
 io_file: 
+
+# file containing the test result
 res_file: TEST_RES
+
+# file use for the tolerance checker
 yufile: output_stat.dat
+
+# list of dual parameters (which may be interchanged in the namelists)
 dual_params: []
+
+# which namelist file contains switch to activate testsuite output
 nl_ts_switch: 
+
+# where are all namelists echoed after execution
 config_nl: 
+
+# is preturbation necessary
 pert_avail: True
