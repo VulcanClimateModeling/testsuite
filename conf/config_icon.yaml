@@ -6,6 +6,9 @@ model: icon
 # input namelist wildcard
 nml_wildcard: 
 
+# input dir link name (use . for same as in data dir)
+indir_link: '.'
+
 # list of input namelists
 l_files: []
 

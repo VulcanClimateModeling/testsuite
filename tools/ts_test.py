@@ -354,7 +354,8 @@ class Test:
             status = system_command('/bin/cp -f -r '+dir_path(self.inputdir)+'in_aux/* ./', self.logger)
 
         # linking input binary fields
-        status = system_command('/bin/ln -s '+dir_path(self.inputdir)+'input .', self.logger)
+        status = system_command('/bin/ln -s '+dir_path(self.inputdir)+'input '+self.conf.indir_link, self.logger)
+        
         # generation of the output folder
         status = system_command('/bin/mkdir -p output', self.logger)
 
