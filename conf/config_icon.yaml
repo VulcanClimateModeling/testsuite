@@ -37,7 +37,7 @@ dual_params: []
 nl_ts_switch: 
 
 # where are all namelists echoed after execution
-config_nl: 
+config_nl: ""
 
 # is preturbation necessary
 pert_avail: True
