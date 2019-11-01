@@ -41,10 +41,15 @@ class objectview(object):
 
 def parse_config_file(filename):
 
+    # read YAML configuration file
     with open(filename) as f:
         data = yaml.load(f)
 
+    # convert dictionary to object with attributes
     conf = objectview(data)
+
+    # save base directory where testsuite is executed
+    conf.basedir = os.getcwd()
 
     return conf 
 
