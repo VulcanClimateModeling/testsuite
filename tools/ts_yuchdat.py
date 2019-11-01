@@ -15,7 +15,7 @@ __email__      = "cosmo-wg6@cosmo.org"
 __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 
 
-def compare(file1,file2, thresholds, threshold_var='*', update_thresholds=False, v_level=0):
+def compare(file1, file2, thresholds, threshold_var='*', update_thresholds=False, v_level=0):
     # compare two YUCHKDAT file1, file2 with the Thresholds class. 
     #   thresholds.minval: contains the minimal threshold to be used
     #   threshold_var: defines the threshold variable to be used to check the threshold. Typically this is

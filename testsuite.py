@@ -210,7 +210,7 @@ def parse_cmdline():
 
     # parse
     try:
-        (options,args)=parser.parse_args()
+        (options,args) = parser.parse_args()
     except (OP.OptionError,TypeError):
         sys.exit("problem parsing command line arguments (check ./testsuite.py -h for valid arguments)")
 
@@ -258,28 +258,28 @@ def main():
     options = parse_cmdline()
 
     if os.path.isfile(options.config_file): 
-       conf = parse_config_file(options.config_file)
-    elif os.path.isfile(os.path.join(os.path.dirname(__file__),options.config_file)):
-       conf = parse_config_file(os.path.join(os.path.dirname(__file__),options.config_file))     
+        conf = parse_config_file(options.config_file)
+    elif os.path.isfile(os.path.join(os.path.dirname(__file__), options.config_file)):
+        conf = parse_config_file(os.path.join(os.path.dirname(__file__), options.config_file))     
     else:
         #logger not initialize at this stage, use print and exit
-        print('Error: Missing configuration file '+options.config_file)
+        print('Error: Missing configuration file ' + options.config_file)
         sys.exit(1)
         
     # redirect standard output (if required)
     logger = setup_logger(options)
 
     # hello world!
-    logger.important('TESTSUITE '+__version__)
+    logger.important('TESTSUITE ' + __version__)
 
     # parse the .xml file which contains the test definitions
-    logger.info('Parsing XML ('+options.testlist+')')
+    logger.info('Parsing XML (' + options.testlist + ')')
     root = parse_xmlfile(options.testlist, logger)
 
     # generate work directory
-    status = system_command('/bin/mkdir -p '+options.workdir+'/', logger, throw_exception=False)
+    status = system_command('/bin/mkdir -p ' + options.workdir + '/', logger, throw_exception=False)
     if status:
-      exit(status)
+        exit(status)
 
     # loops over all the tests
     stop = False

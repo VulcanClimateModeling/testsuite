@@ -26,4 +26,4 @@ class DefaultValues:
     workdir            = "./work"
     tolerance          = "TOLERANCE"
     icon               = False
-    config_file        = "testsuite_config.cfg"
+    config_file        = "cosmo_config.cfg"
