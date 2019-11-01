@@ -34,10 +34,10 @@ yufile: output_stat.dat
 dual_params: []
 
 # which namelist file contains switch to activate testsuite output
-nl_ts_switch: 
+nl_ts_switch: input.nml
 
 # where are all namelists echoed after execution
-config_nl: "logfile.000000.out"
+config_nl: logfile.000000.out
 
 # is preturbation necessary
 pert_avail: True

@@ -34,7 +34,7 @@ yufile: output_stat.dat
 dual_params: []
 
 # which namelist file contains switch to activate testsuite output
-nl_ts_switch: 
+nl_ts_switch: ""
 
 # where are all namelists echoed after execution
 config_nl: ""
