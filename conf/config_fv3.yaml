@@ -1,13 +1,16 @@
 # testsuite configuration for FV3 model
 
+# set model name
+model: fv3
+
 # input namelist wildcard
 nml_wildcard: '*.nml'
 
 # list of input namelists
-l_files: []
+l_files: [input.nml]
 
 # file containing the parallization options (nproc ...)
-par_file: 
+par_file: input.nml
 
 # file containing time step information
 dt_file: 

@@ -424,44 +424,73 @@ class Test:
 
         self.logger.info('Set domain decomposition and number of I/O PEs')
 
-        ### extract number of I/O processors
-        if self.options.nprocio is not None:
-            nprocio = self.options.nprocio
-        else:
-            if get_param(self.conf.par_file,'num_iope_percomm') != '':
-               num_iope_percomm = int(get_param(self.conf.par_file,'num_iope_percomm'))
-               num_asynio_comm = int(get_param(self.conf.par_file,'num_asynio_comm'))
-               nprocio = num_asynio_comm * num_iope_percomm
+        if self.conf.model == 'cosmo':
+
+            ### extract number of I/O processors
+            if self.options.nprocio is not None:
+                nprocio = self.options.nprocio
             else:
-               nprocio = int(get_param(self.conf.par_file,'nprocio'))
+                if get_param(self.conf.par_file,'num_iope_percomm') != '':
+                   num_iope_percomm = int(get_param(self.conf.par_file,'num_iope_percomm'))
+                   num_asynio_comm = int(get_param(self.conf.par_file,'num_asynio_comm'))
+                   nprocio = num_asynio_comm * num_iope_percomm
+                else:
+                   nprocio = int(get_param(self.conf.par_file,'nprocio'))
 
-        # sets the number of I/O processors
-        if get_param(self.conf.par_file,'num_iope_percomm') != '':
-           if nprocio == 0:
-              replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm= 0')
-              replace_param(self.conf.io_file,'lasync_io',' lasync_io=.FALSE.')
+            # sets the number of I/O processors
+            if get_param(self.conf.par_file,'num_iope_percomm') != '':
+               if nprocio == 0:
+                  replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm= 0')
+                  replace_param(self.conf.io_file,'lasync_io',' lasync_io=.FALSE.')
 
-           else:   
-              replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm= 1')
-              replace_param(self.conf.io_file,'lasync_io',' lasync_io=.TRUE.')
-           replace_param(self.conf.par_file,'num_asynio_comm',' num_asynio_comm= %i' %nprocio)
+               else:   
+                  replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm= 1')
+                  replace_param(self.conf.io_file,'lasync_io',' lasync_io=.TRUE.')
+               replace_param(self.conf.par_file,'num_asynio_comm',' num_asynio_comm= %i' %nprocio)
+            else:
+               replace_param(self.conf.par_file,'nprocio',' nprocio= %i' %nprocio)
+
+            # generates the parallelist
+            parlist = []
+            parlist = self.set_parallelization(self.nprocs,nprocio)
+
+            # select the parallelization
+            ap = int(self.node.findtext("autoparallel"))
+            if ap > len(parlist):
+                raise SkipError('The selected autoparallel number is too large for the given number of processor (not enough decompositions available)')
+
+            # writes the new MPI decomposition
+            nprocx = parlist[ap-1][0]
+            nprocy = parlist[ap-1][1]
+            replace_param(self.conf.par_file, 'nprocx', ' nprocx= %i' %nprocx)
+            replace_param(self.conf.par_file, 'nprocy', ' nprocy= %i' %nprocy)
+
+        elif self.conf.model == 'fv3':
+
+             ### set number of I/O processors
+            if self.options.nprocio is not None:
+                nprocio = self.options.nprocio
+                replace_param(self.conf.par_file,'io_layout',' io_layout= %i,%i' % (nprocio, nprocio))
+
+            # generates the parallelist
+            parlist = []
+            parlist = self.set_parallelization(self.nprocs/6,0)
+
+            # select the parallelization
+            ap = int(self.node.findtext("autoparallel"))
+            if ap > len(parlist):
+                raise SkipError('The selected autoparallel number is too large for the given number of processor (not enough decompositions available)')
+
+            # writes the new MPI decomposition
+            nprocx = parlist[ap-1][0]
+            nprocy = parlist[ap-1][1]
+            replace_param(self.conf.par_file, 'layout', ' layout = %i,%i' % (nprocx, nprocy))
+
         else:
-           replace_param(self.conf.par_file,'nprocio',' nprocio= %i' %nprocio)
+            raise ValueError('*** ERROR: Unsupported model encountered'\
+                             ' in trying to set the parallelization')
 
-        # generates the parallelist
-        parlist = []
-        parlist = self.set_parallelization(self.nprocs,nprocio)
 
-        # select the parallelization
-        ap = int(self.node.findtext("autoparallel"))
-        if ap > len(parlist):
-            raise SkipError('The selected autoparallel number is too large for the given number of processor (not enough decompositions available)')
-
-        # writes the new MPI decomposition
-        nprocx = parlist[ap-1][0]
-        nprocy = parlist[ap-1][1]
-        replace_param(self.conf.par_file, 'nprocx', ' nprocx= %i' %nprocx)
-        replace_param(self.conf.par_file, 'nprocy', ' nprocy= %i' %nprocy)
                                  
         # echo to log
         self.logger.info('Processors distribution set to ' + 
@@ -489,7 +518,7 @@ class Test:
         nxy = int(nprocs)-int(nprocio)
         if nxy < 1:
             raise ValueError('*** ERROR: The number of total processor'\
-                                 ' is smaller equal the number of I\O processors')
+                             ' is smaller equal the number of I\O processors')
         parlist = []
 
         for i in range(nxy,0,-1):

@@ -1,5 +1,8 @@
 # testsuite configuration for COSMO model
 
+# set model name
+model: cosmo
+
 # input namelist wildcard
 nml_wildcard: INPUT*
 

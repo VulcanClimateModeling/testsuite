@@ -1,5 +1,8 @@
 # testsuite configuration for ICON model
 
+# set model name
+model: icon
+
 # input namelist wildcard
 nml_wildcard: 
 
