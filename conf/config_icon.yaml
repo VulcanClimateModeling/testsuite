@@ -16,13 +16,13 @@ outdir_name: []
 l_files: []
 
 # file containing the parallization options (nproc ...)
-par_file: 
+par_file: ""
 
 # file containing time step information
-dt_file: 
+dt_file: ""
 
 # file containing the lasync_io flag
-io_file: 
+io_file: ""
 
 # file containing the test result
 res_file: TEST_RES
