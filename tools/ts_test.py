@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 """
 COSMO TECHNICAL TESTSUITE
@@ -31,7 +31,7 @@ class Test:
         self.type = node.attrib['type'] # set test type
         self.description = node.findtext('description') # storage of the description string
         self.options = copy.copy(options) # test options
-        self.conf = copy.copy(conf) # storage of the auxiliary parameters
+        self.conf = copy.copy(conf)     # storage of the auxiliary parameters
         self.logger = logger            # store logger
         self.result = 30                # default to CRASH
 

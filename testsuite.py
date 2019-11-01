@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 """
 COSMO TECHNICAL TESTSUITE
@@ -79,111 +79,135 @@ def parse_cmdline():
     # defines the number of processor, the number of processors is not a test specific option,
     # it overrides the values present in the namelist INPUT_ORG
     parser.set_defaults(nprocs=DefaultValues.nprocs)
-    parser.add_option("-n",type="int",dest="nprocs",
+    parser.add_option("-n", type="int", dest="nprocs",
                help=("number of processors (nprocx*nprocy+nprocio) to use [default=%d]" % DefaultValues.nprocs))
     
     # defines the number of I/O processors, not a test specific option
     parser.set_defaults(nprocio=DefaultValues.nprocio)
-    parser.add_option("--nprocio",type="int",dest="nprocio",
+    parser.add_option("--nprocio", type="int", dest="nprocio",
                help="set number of asynchronous IO processor, [default=<from namelist>]")
  
     # defines the behavior of testsuite after fail or crash
-    parser.add_option("-f","--force",action="store_true",dest="force",default=False,
-               help="do not stop upon error")
+    parser.set_defaults(force=DefaultValues.force)
+    parser.add_option("-f","--force", dest="force", action="store_true", 
+               help="do not stop upon error [default=%r]" % DefaultValues.force)
     
     # set the level of verbosity of the standard output
     parser.set_defaults(v_level=DefaultValues.v_level)
-    parser.add_option("-v",type="int",dest="v_level",help=("verbosity level 0 to 3 [default=%d]" % DefaultValues.v_level))
+    parser.add_option("-v", type="int", dest="v_level", action="store",
+               help=("verbosity level 0 to 3 [default=%d]" % DefaultValues.v_level))
 
     # specifies the syntax of the mpi command
     parser.set_defaults(mpicmd=DefaultValues.mpicmd)
-    parser.add_option("--mpicmd",dest="mpicmd",type="string",
+    parser.add_option("--mpicmd", type="string", dest="mpicmd", action="store",
                help=("MPI run command (e.g. \"mpirun -n\") [default=\"%s\"]" % DefaultValues.mpicmd))
 
     # defines the executable name, this overides the definition in testlist.xml if any
     parser.set_defaults(exe=DefaultValues.exe)
-    parser.add_option("--exe",dest="exe",type="string",
+    parser.add_option("--exe", type="string", dest="exe", action="store",
                help="Executable file, [default=<from testlist.xml>]")
 
     # defines if the output will be colored or not
-    parser.add_option("--color",action="store_true",dest="color",default=False,
-               help="Select colored output [default=False]")
+    parser.set_defaults(color=DefaultValues.color)
+    parser.add_option("--color", dest="color", action="store_true",
+               help="Select colored output [default=%r]" % DefaultValues.color)
 
     # overrides the hstop/nstop options in the namelist and execute the cosmo runs with a given number of steps
     parser.set_defaults(steps=DefaultValues.steps)
-    parser.add_option("--steps",dest="steps",type="int",action="store",
+    parser.add_option("--steps", type="int", dest="steps", action="store",
                help="Run only specified number of timesteps [default=<from namelist>]")
 
     # defines if a wrapper for job submission has to be written or not
-    parser.add_option("-w","--wrapper",action="store_true",dest="use_wrappers",default=False,
-               help="Use wrapper instead of executable for mpicmd [default=False]")
+    parser.set_defaults(use_wrappers=DefaultValues.use_wrappers)
+    parser.add_option("-w","--wrapper", dest="use_wrappers", action="store_true", 
+               help="Use wrapper instead of executable for mpicmd [default=%r]" % DefaultValues.use_wrappers)
 
     # defines the filename for the redirected standard output
     parser.set_defaults(stdout=DefaultValues.stdout)
-    parser.add_option("-o",dest="stdout",type="string",action="store",
+    parser.add_option("-o", type="string", dest="stdout", action="store",
                help="Redirect standard output to selected file [default=<stdout>]")
     
     # defines the behaviour of the redirected standard output, if appended or overwritten
-    parser.add_option("-a","--append",action="store_true",default=False,dest="outappend",
-               help="Appends standard output if redirection selected [default=False]")
+    parser.set_defaults(outappend=DefaultValues.outappend)
+    parser.add_option("-a","--append", dest="outappend", action="store_true",
+               help="Appends standard output if redirection selected [default=%r]" % DefaultValues.outappend)
     
     # only one test is executed
-    parser.add_option("--only",dest="only",type="string",action="store",
-               help="Run only one test define as type,name (e.g. --only=cosmo7,test_1)")
+    parser.set_defaults(only=DefaultValues.only)
+    parser.add_option("--only", type="string", dest="only", action="store",
+               help="Run only one test define as type,name (e.g. --only=cosmo7,test_1) [default=None]")
 
     # update namelist (no run). This is useful to quickly change all namelist at once 
-    parser.add_option("--update-namelist",dest="upnamelist",action="store_true",default=False,
-               help="Use Testsuite to update namelists (no tests executed)")
+    parser.set_defaults(upnamelist=DefaultValues.upnamelist)
+    parser.add_option("--update-namelist", dest="upnamelist", action="store_true",
+               help="Use Testsuite to update namelists (no tests executed) [default=%r]" % DefaultValues.upnamelist)
 
     # force bit-reproducible results
-    parser.add_option("--force-match",dest="forcematch",action="store_true",default=DefaultValues.forcematch,
-               help="Force bit-reproducible results")
+    parser.set_defaults(forcematch=DefaultValues.forcematch)
+    parser.add_option("--force-match", dest="forcematch", action="store_true",
+               help="Force bit-reproducible results [default=%r]" % DefaultValues.forcematch)
 
-    parser.add_option("--force-match-base",dest="forcematch_base",action="store_true",default=DefaultValues.forcematch_base,
-               help="Force bit-reproducible results only for base tests, i.e. those with name matching test in data/ folder")
+    # only force bit-reproducible results for base tests
+    parser.set_defaults(forcematch_base=DefaultValues.forcematch_base)
+    parser.add_option("--force-match-base", dest="forcematch_base", action="store_true",
+               help="Force bit-reproducible results only for base tests, " + 
+                    "i.e. those with name matching test in data/ folder [default=%r]" % DefaultValues.forcematch_base)
 
-    parser.add_option("--tune-thresholds",dest="tune_thresholds",action="store_true",default=DefaultValues.tune_thresholds,
-               help="Change thresholds to always at least return OK")
+    # tune thresholds
+    parser.set_defaults(tune_thresholds=DefaultValues.tune_thresholds)
+    parser.add_option("--tune-thresholds", dest="tune_thresholds", action="store_true",
+               help="Change thresholds to always at least return OK [default=%r]" % DefaultValues.tune_thresholds)
 
-    parser.add_option("--update-thresholds",dest="update_thresholds",action="store_true",default=DefaultValues.update_thresholds,
-               help="Update the thresholds")
+    # update thresholds
+    parser.set_defaults(update_thresholds=DefaultValues.update_thresholds)
+    parser.add_option("--update-thresholds", dest="update_thresholds", action="store_true",
+               help="Update the thresholds [default=%r]" % DefaultValues.update_thresholds)
 
-    parser.add_option("--tuning-iterations",dest="tuning_iterations",action="store",default=DefaultValues.tuning_iterations,
-               help="Defines how many times the tuning gets executed")
+    # set number of iterations for tuning
+    parser.set_defaults(tuning_iterations=DefaultValues.tuning_iterations)
+    parser.add_option("--tuning-iterations", dest="tuning_iterations", action="store",
+               help="Defines how many times the tuning gets executed [default=%d]" % DefaultValues.tuning_iterations)
 
-    parser.add_option("--reset-thresholds",dest="reset_thresholds",action="store_true",default=DefaultValues.reset_thresholds,
-               help="Set all thresholds to 0.0 before tuning")
+    # set thresholds to zero before tuning
+    parser.set_defaults(reset_thresholds=DefaultValues.reset_thresholds)
+    parser.add_option("--reset-thresholds", dest="reset_thresholds", action="store_true",
+               help="Set all thresholds to 0.0 before tuning [default=%r]" % DefaultValues.reset_thresholds)
 
-    # update namelist (no run). This is useful to quickly change all namelist at once 
-    parser.add_option("--update-yufiles",dest="upyufiles",action="store_true",default=False,
-               help="Define new references (no tests executed)")
+    # update namelist (no run). This is useful to quickly change all namelist at once
+    parser.set_defaults(upyufiles=DefaultValues.upyufiles)
+    parser.add_option("--update-yufiles", dest="upyufiles", action="store_true",
+               help="Define new references (no tests executed) [default=%r]" % DefaultValues.upyufiles)
 
     # specifies the namelist file
     parser.set_defaults(testlist=DefaultValues.testlist)
-    parser.add_option("-l","--testlist",dest="testlist",type="string",action="store",default=DefaultValues.testlist,
+    parser.add_option("-l","--testlist", type="string", dest="testlist", action="store",
                help=("Select the testlist file [default=%s]" % DefaultValues.testlist))
 
     # timeout value for individual tests
     parser.set_defaults(timeout=DefaultValues.timeout)
-    parser.add_option("-t","--timeout",dest="timeout",type="int",action="store",default=None,
+    parser.add_option("-t","--timeout", type="int", dest="timeout", action="store",
                help=("Timeout in s for each test [default=%s]" % DefaultValues.timeout))
 
     # working directory
-    parser.add_option("--workdir",dest="workdir",type="string",action="store",default="./work",
-               help="Working directory [default=./work]")
+    parser.set_defaults(workdir=DefaultValues.workdir)
+    parser.add_option("--workdir", type="string", dest="workdir", action="store",
+               help="Working directory [default=%s]" % DefaultValues.workdir)
 
     # specifies the tolerance file name for the tolerance checker
     parser.set_defaults(tolerance=DefaultValues.tolerance)
-    parser.add_option("--tolerance",dest="tolerance",type="string",action="store",default=DefaultValues.tolerance,
+    parser.add_option("--tolerance", type="string", dest="tolerance", action="store",
                help=("Select the tolerance file name [default=%s]" % DefaultValues.tolerance))
 
     # flag to run the testsuite for icon
-    parser.add_option("--icon",dest="icon",action="store_true",default=DefaultValues.icon,
+    parser.set_defaults(icon=DefaultValues.icon)
+    parser.add_option("--icon", dest="icon", action="store_true",
                help=("Run the testsuite for ICON [default=%s]" % DefaultValues.icon))
 
     # name of the config file
-    parser.add_option("--config-file",dest="config_file",action="store",default=DefaultValues.config_file,
+    parser.set_defaults(config_file=DefaultValues.config_file)
+    parser.add_option("--config-file", type="string", dest="config_file", action="store",
                help=("Name of the testsuite configuration file [default=%s]" % DefaultValues.config_file))
+
     # parse
     try:
         (options,args)=parser.parse_args()
@@ -241,8 +265,6 @@ def main():
         #logger not initialize at this stage, use print and exit
         print('Error: Missing configuration file '+options.config_file)
         sys.exit(1)
-
-
         
     # redirect standard output (if required)
     logger = setup_logger(options)
