@@ -42,7 +42,7 @@ class objectview(object):
 def parse_config_file(filename):
 
     with open(filename) as f:
-        data = yaml.load(f, Loader=yaml.FullLoader)
+        data = yaml.load(f)
 
     conf = objectview(data)
 
