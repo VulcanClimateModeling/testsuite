@@ -1,7 +1,7 @@
 # testsuite configuration for FV3 model
 
 # input namelist wildcard
-nml_wildcard: *.nml
+nml_wildcard: '*.nml'
 
 # list of input namelists
 l_files: []
