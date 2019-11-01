@@ -23,6 +23,5 @@ testlist: testlist.xml
 timeout: 
 workdir: ./work
 tolerance: TOLERANCE
-icon: False
 config_file: conf/config_cosmo.yaml
 

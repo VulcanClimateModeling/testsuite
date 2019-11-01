@@ -192,11 +192,6 @@ def parse_cmdline():
     parser.add_option("--tolerance", type="string", dest="tolerance", action="store",
                help=("Select the tolerance file name [default=%s]" % defaults.tolerance))
 
-    # flag to run the testsuite for icon
-    parser.set_defaults(icon=defaults.icon)
-    parser.add_option("--icon", dest="icon", action="store_true",
-               help=("Run the testsuite for ICON [default=%s]" % defaults.icon))
-
     # name of the config file
     parser.set_defaults(config_file=defaults.config_file)
     parser.add_option("--config-file", type="string", dest="config_file", action="store",
@@ -302,7 +297,7 @@ def main():
                     mytest.prepare() # prepare test directory and update namelists
                     mytest.update_namelist() #copy back namelist in typedir
                 # Spcial setup for ICON where only check is run
-                elif options.icon:
+                elif conf.model == 'icon':
                     mytest.options.pert = 0
                     logger.important('Running checks for ICON')
                     mytest.log_file = 'final_status.txt'

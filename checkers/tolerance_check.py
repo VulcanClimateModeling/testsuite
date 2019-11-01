@@ -43,7 +43,7 @@ def check():
     tune_thresholds = str_to_bool(env['TUNE_THRESHOLDS'])
     tune_times = int(env['TUNING_ITERATIONS'])
     reset_thresholds = str_to_bool(env['RESET_THRESHOLDS'])
-    icon = str_to_bool(env['ICON'])
+    model = str_to_bool(env['MODEL'])
     yufile = env['YUFILE']
 
     #check if namelist file with switch exists in namelistdir
@@ -56,8 +56,9 @@ def check():
     # defines the 1 file that belongs logically to the checker
     yufile1 = rundir + yufile
     yufile2 = refoutdir + yufile
+
     # check if special testsuite output was activated
-    if not icon:
+    if model == 'cosmo':
        if get_param(rundir+switch, yuswitch) in ['.FALSE.', '.false.']:
           if verbosity:
              print yuswitch +' is set to .false. in '+ rundir + switch +' for this simulation'
