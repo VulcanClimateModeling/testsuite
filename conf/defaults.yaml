@@ -1,0 +1,28 @@
+# default values for command line options
+nprocs: 16
+nprocio: 
+force: False
+v_level: 1
+mpicmd: "aprun -n"
+exe: 
+color: False
+steps: 
+use_wrappers: False
+stdout: ""
+outappend: False
+only: 
+upnamelist: False
+forcematch: False
+forcematch_base: False
+tune_thresholds: False
+update_thresholds: False
+tuning_iterations: 10
+reset_thresholds: False
+upyufiles: False
+testlist: testlist.xml
+timeout: 
+workdir: ./work
+tolerance: TOLERANCE
+icon: False
+config_file: conf/config_cosmo.yaml
+

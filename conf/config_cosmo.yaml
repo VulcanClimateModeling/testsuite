@@ -1,0 +1,11 @@
+# testsuite configuration for COSMO model
+l_files: [INPUT_ORG,INPUT_ASS,INPUT_DIA,INPUT_DYN,INPUT_INI,INPUT_IO,INPUT_PHY,INPUT_SAT,INPUT_POL,INPUT_IDEAL]
+par_file: INPUT_ORG
+dt_file: INPUT_ORG
+io_file: INPUT_IO
+res_file: TEST_RES
+yufile: YUPRTEST
+dual_params: [[nstop,hstop],[hincrad,nincrad]]
+nl_ts_switch: INPUT_DIA
+config_nl: YUSPECIF
+pert_avail: True

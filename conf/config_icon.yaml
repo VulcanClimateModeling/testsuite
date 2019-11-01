@@ -1,0 +1,11 @@
+# testsuite configuration for ICON model
+l_files: []
+par_file: 
+dt_file: 
+io_file: 
+res_file: TEST_RES
+yufile: output_stat.dat
+dual_params: []
+nl_ts_switch: 
+config_nl: 
+pert_avail: True
