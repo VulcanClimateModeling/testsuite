@@ -30,7 +30,7 @@ def run_checker():
     verbose = int(env['VERBOSE'])
     rundir = env['RUNDIR']
     log_output = env['LOGFILE']
-    model = str_to_bool(env['MODEL'])
+    model = env['MODEL']
 
     # construct stdout filename
     working_dir = dir_path(rundir).replace("./", "", 1) 
@@ -52,6 +52,8 @@ def run_checker():
         #   Class/Type                  Name                    RegularExpression
             OccurrenceCrashPattern(     "Cleanup pattern",      "Termination (.*)" )
         ]
+    else:
+        sys.exit(20)
 
 
     cosmo_filechecker = FileChecker()
