@@ -1,5 +1,8 @@
 # testsuite configuration for COSMO model
 
+# input namelist wildcard
+nml_wildcard: INPUT*
+
 # list of input namelists
 l_files: [INPUT_ORG,INPUT_ASS,INPUT_DIA,INPUT_DYN,INPUT_INI,INPUT_IO,INPUT_PHY,INPUT_SAT,INPUT_POL,INPUT_IDEAL]
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 """
 COSMO TECHNICAL TESTSUITE
@@ -300,7 +300,7 @@ class Test:
         if re.match(pattern,text):
             status = change_dir(self.rundir, self.logger)
             self.logger.important('Updating namelist data/'+self.type+'/'+self.name)
-            cmd = 'cp INPUT* '+self.namelistdir
+            cmd = 'cp '+self.conf.nml_wildcard+' '+self.namelistdir
             self.logger.debug('Executing: '+cmd)
             status = system_command(cmd, self.logger)
             self.result = 0 # MATCH
@@ -347,7 +347,7 @@ class Test:
         status = system_command('/bin/rm -r -f *', self.logger)
         
         # explicit copy of the namelists (copy is required since we will apply the change_par)
-        status = system_command('/bin/cp -f '+self.namelistdir+'INPUT* .', self.logger)
+        status = system_command('/bin/cp -f '+self.namelistdir+self.conf.nml_wildcard+' .', self.logger)
 
         # copy of the auxiliary input parameters if exists
         if not glob.glob(os.path.join(dir_path(self.inputdir)+'in_aux/', '*'))==[]:

@@ -1,5 +1,8 @@
 # testsuite configuration for ICON model
 
+# input namelist wildcard
+nml_wildcard: 
+
 # list of input namelists
 l_files: []
 
