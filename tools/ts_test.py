@@ -194,7 +194,7 @@ class Test:
             f.write('#!/bin/sh\n')
             f.write('./'+self.executable+redirect_output+'\n')
             f.close()
-            status = os.chmod('wrapper.sh',0755)
+            status = os.chmod('wrapper.sh', 0O755)
             if status:
                 raise StopError('Problem changing permissions on wrapper.sh')
             run_cmd = run_cmd + ' ./' + 'wrapper.sh'

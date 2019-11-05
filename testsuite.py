@@ -14,8 +14,6 @@ import os, sys, string, struct
 import optparse as OP
 import xml.etree.ElementTree as XML
 import logging as LG
-import ConfigParser
-import ast
 import yaml
 
 # private modules
@@ -43,7 +41,7 @@ def parse_config_file(filename):
 
     # read YAML configuration file
     with open(filename) as f:
-        data = yaml.load(f)
+        data = yaml.load(f, Loader=yaml.FullLoader)
 
     # convert dictionary to object with attributes
     conf = objectview(data)
@@ -59,7 +57,7 @@ def parse_cmdline():
 
     # read default values
     with open(os.path.join(os.path.dirname(__file__), 'conf', 'defaults.yaml')) as f:
-        data = yaml.load(f)
+        data = yaml.load(f, Loader=yaml.FullLoader)
     defaults = objectview(data)
 
     # the parser is initialized with its description and its epilog
