@@ -28,7 +28,7 @@ io_file: ""
 res_file: TEST_RES
 
 # file use for the tolerance checker
-yufile: output_stat.dat
+yufile: YUPRTEST
 
 # list of dual parameters (which may be interchanged in the namelists)
 dual_params: []
