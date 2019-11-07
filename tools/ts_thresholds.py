@@ -330,8 +330,8 @@ class Thresholds(object):
         t = self.get_threshold(variable, step)
         x = self.__compute_threshold(value)
         if value > t:
-            print (header + " thresholds had to be changed at: var= " + str(variable)
-                    + " step = " + str(step) + " value = " + str(value))
+            print(header + " thresholds had to be changed at: var= " + str(variable)
+                  + " step = " + str(step) + " value = " + str(value))
             if variable not in self._thresholds and self._create_nonexisting_variables:
                 self.add_variable(variable)
             t = self.__get_threshold_values(variable)
@@ -340,7 +340,7 @@ class Thresholds(object):
             stepmax = self._steps[imax]
             if stepmin != stepmax:
                 position = float(step - stepmin) / float(stepmax - stepmin)
-                tnew = self.__interpolate_threshold(t[imin], value, position)
+                tnew = t[imax] * value / self.__interpolate_threshold(t[imin], t[imax], position)
                 t[imax] = max(t[imax], tnew)
             else:
                 t[imax] = value
@@ -440,7 +440,7 @@ class Test(unittest.TestCase):
         }
         f = tempfile.NamedTemporaryFile(mode='w+b', delete=False)
         self._filename = f.name
-        f.write(self._s)
+        f.write(self._s.encode('ascii'))
         f.close()
 
     def tearDown(self):

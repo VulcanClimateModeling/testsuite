@@ -18,8 +18,8 @@ c.print_results()
 # built-in modules
 import unittest
 from tempfile import NamedTemporaryFile
-from itertools import izip
 import os, math
+import re
 
 # other modules
 from ts_thresholds import Thresholds
@@ -55,6 +55,16 @@ class Yuprtest(object):
     def __iter__(self):
         return self
 
+    def __to_float(self, string):
+        """convert Fortran output to float"""
+        p = re.compile(r'[0-9][+-][0-9]')
+        m = p.search(string)
+        if m:
+            i = m.start()+1
+            return float(string[:i] + 'E' + string[i:])
+        else:
+            return float(string)
+
     def __read_data(self):
         """read data in file and do some basic processing"""
         lineno = 0
@@ -70,6 +80,7 @@ class Yuprtest(object):
             else:
                 if not header:
                     raise IOError('Parse error on line ' + str(lineno))
+        self._file.close()
 
     def __parse_line(self, line, lineno):
         data = line.strip().split()
@@ -87,8 +98,8 @@ class Yuprtest(object):
         data.pop(5)  # remove j-position of minimum
         data.pop(4)  # remove i-position of minimum
         # entry: var step level minval maxval meanval
-        data = [data[0], int(data[1]), int(data[2]), float(data[3]),
-                float(data[4]), float(data[5])]
+        data = [data[0], int(data[1]), int(data[2]), self.__to_float(data[3]),
+                self.__to_float(data[4]), self.__to_float(data[5])]
         return data
 
     def __check_timesteps(self):
@@ -239,6 +250,8 @@ class Compare(object):
         (status1, diff1, thresh) = self.__compare_values(var, step, minval1, minval2)
         (status2, diff2, thresh) = self.__compare_values(var, step, maxval1, maxval2)
         (status3, diff3, thresh) = self.__compare_values(var, step, meanval1, meanval2)
+        if self._mode == "update":
+            return None
         status = max([status1, status2, status3])
         diff = max([diff1, diff2, diff3])
         pos = ["minimum", "maximum", "mean"][[diff1, diff2, diff3].index(min([diff1, diff2, diff3]))]
@@ -302,7 +315,7 @@ class Compare(object):
         steps2 = set(self._yu2.steps)
         commonSteps = steps1 & steps2
         # Only compare common time steps
-        for x, y in izip(self._yu1.getSubline(commonSteps), self._yu2.getSubline(commonSteps)):
+        for x, y in zip(self._yu1.getSubline(commonSteps), self._yu2.getSubline(commonSteps)):
             yupr_line = self.__compare_entry(x, y)
             self.__update_status(yupr_line)
             self._lineno += 1
@@ -329,7 +342,7 @@ class Compare(object):
         # Note: The effect update is done in the __compare_values 
         self._mode = "update"
         self._lineno = 0
-        for x, y in izip(self._yu1.getline(), self._yu2.getline()):
+        for x, y in zip(self._yu1.getline(), self._yu2.getline()):
             self.__compare_entry(x, y)
             self._lineno += 1
         
@@ -372,7 +385,7 @@ class Test(unittest.TestCase):
 """
         f = NamedTemporaryFile(mode='w+b', delete=False)
         self._filename1 = f.name
-        f.write(self._s)
+        f.write(self._s.encode('ascii'))
         f.close()
         self._s = """
 #    Experiment:  COSMO-Model        Number:    907   SUN 22.01.2012  00:00:00 UTC +          0 H  (SUN 22.01.2012  00:00:00 UTC)
@@ -404,7 +417,7 @@ class Test(unittest.TestCase):
 """
         f = NamedTemporaryFile(mode='w+b', delete=False)
         self._filename2 = f.name
-        f.write(self._s)
+        f.write(self._s.encode('ascii'))
         f.close()
         self._t = """
  minval = 1e-12

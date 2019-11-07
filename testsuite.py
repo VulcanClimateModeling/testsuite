@@ -246,8 +246,8 @@ def main():
 
     if os.path.isfile(options.config_file): 
         conf = parse_config_file(options.config_file)
-    elif os.path.isfile(os.path.join(os.path.dirname(__file__), options.config_file)):
-        conf = parse_config_file(os.path.join(os.path.dirname(__file__), options.config_file))     
+    elif os.path.isfile(os.path.join(os.path.dirname(__file__), 'conf', options.config_file)):
+        conf = parse_config_file(os.path.join(os.path.dirname(__file__), 'conf', options.config_file))     
     else:
         #logger not initialize at this stage, use print and exit
         print('Error: Missing configuration file ' + options.config_file)
@@ -301,7 +301,7 @@ def main():
                     mytest.log_file = 'final_status.txt'
                     mytest.check()
                 else:
-                    if(mytest.options.tune_thresholds):
+                    if mytest.options.tune_thresholds:
                         mytest.options.pert = 0
                         for i in range(int(mytest.options.tuning_iterations)):
                             mytest.prepare() # prepare test directory and update namelists

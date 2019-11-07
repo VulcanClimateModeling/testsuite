@@ -50,7 +50,7 @@ def check():
     yufile2 = refoutdir + yufile
 
     if not switch: # no need to extract timestep and to check output lists
-        nlfile  = env['NL_TS_SWITCH']
+        nlfile  = env['NL_SWITCH']
     else:
         nlfile  = 'INPUT_IO'    # namelist file containing yuswitch
         nlfile2 = 'INPUT_ORG'   # namelist file containing dt

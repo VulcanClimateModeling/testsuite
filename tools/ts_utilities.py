@@ -88,7 +88,7 @@ def system_command(cmd, logger, throw_exception=True, return_output=False, issue
             line = s.stdout.readline()
             if not line:
                 break
-            lines += line
+            lines += line.decode('ascii')
             if not return_output:
                 logger.debug('   Out: '+line.rstrip())
     if not status:
@@ -153,7 +153,7 @@ def write_environ(test):
 
     os.environ['TS_BASEDIR'] = test.basedir
     os.environ['TS_CONFIG_NL'] = test.conf.config_nl
-    os.environ['TS_NL_TS_SWITCH'] = test.conf.nl_ts_switch
+    os.environ['TS_NL_SWITCH'] = test.conf.nl_ts_switch
     os.environ['TS_DT_FILE'] = test.conf.dt_file
     os.environ['TS_REFOUTDIR'] = test.refoutdir
     os.environ['TS_VERBOSE'] = str(test.options.v_level)
@@ -174,7 +174,7 @@ def read_environ():
     environ = {}
     environ['BASEDIR'] = os.environ['TS_BASEDIR']
     environ['CONFIG_NL'] = os.environ['TS_CONFIG_NL']
-    environ['NL_TS_SWITCH'] = os.environ['TS_NL_TS_SWITCH']
+    environ['NL_SWITCH'] = os.environ['TS_NL_SWITCH']
     environ['DT_FILE'] = os.environ['TS_DT_FILE']
     environ['REFOUTDIR'] = os.environ['TS_REFOUTDIR']
     environ['VERBOSE'] = os.environ['TS_VERBOSE']

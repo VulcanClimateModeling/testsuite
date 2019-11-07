@@ -117,21 +117,13 @@ class Test:
 
     def prepare(self):
         """prepare test directory and namelists for this test"""
-
         self.__setup_directory()
-
         self.__setup_executable()
-
         self.__adapt_namelists()
-
         self.__set_parallelization()
-
         self.__set_timesteps()
-
         self.__set_pert()
-
         self.__prepare_print()
-
 
     def prerun(self):
         """check dependencies and perform any prerun actions"""
@@ -251,19 +243,17 @@ class Test:
 
             # run checker and save result
             checker_result,soutput = system_command(os.path.join(os.path.dirname(__file__), "../checkers/")+checker, self.logger, \
-                                                      return_output=True,throw_exception=False, \
-                                                      issue_error=False)
+                                                    return_output=True,throw_exception=False, issue_error=False)
+
             # print checker output
             for line in soutput.split('\n'):
                 if not line=='':
                     self.logger.chckinfo(line)
-
-
             summary_list.append(checker_result)
                 
             # display the subsummary for the checkers
             self.logger.result(1, checker_result, checker)
-            
+
             self.logger.debug(checker+' END')
 
         # compute summary result    
