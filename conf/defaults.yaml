@@ -18,7 +18,7 @@ tune_thresholds: False
 update_thresholds: False
 tuning_iterations: 10
 reset_thresholds: False
-upyufiles: False
+update_reference: False
 testlist: testlist.xml
 timeout: 
 workdir: ./work

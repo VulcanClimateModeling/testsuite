@@ -300,17 +300,17 @@ class Test:
         else:
             raise SkipError('No test repository ' +'data/'+self.type+'/'+self.name)
 
-    def update_yufiles(self):
+    def update_reference(self):
         """copy back YU* files into the data folder
         Should be used to generate new reference files"""
         
-
-        pattern = '(.*)/'+self.type+'/'+self.name+'(.*)'
+        pattern = '(.*)/' + self.type + '/' + self.name + '(.*)'
         # only update base test, i.e. where test name is the same as self.namelistdir
         text = self.namelistdir
 
         # checks if is the test is a base test
-        if re.match(pattern,text):
+        print('>>>> checking ' + pattern + ' with ' + text)
+        if re.match(pattern, text):
             status = change_dir(self.rundir, self.logger)
             if not os.path.exists(self.conf.yufile):
                 raise SkipError('No file ' +self.conf.yufile+' in '+self.rundir)

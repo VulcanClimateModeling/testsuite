@@ -166,9 +166,9 @@ def parse_cmdline():
                help="Set all thresholds to 0.0 before tuning [default=%r]" % defaults.reset_thresholds)
 
     # update namelist (no run). This is useful to quickly change all namelist at once
-    parser.set_defaults(upyufiles=defaults.upyufiles)
-    parser.add_option("--update-yufiles", dest="upyufiles", action="store_true",
-               help="Define new references (no tests executed) [default=%r]" % defaults.upyufiles)
+    parser.set_defaults(update_reference=defaults.update_reference)
+    parser.add_option("--update-reference", dest="update_reference", action="store_true",
+               help="Define new references (no tests executed) [default=%r]" % defaults.update_reference)
 
     # specifies the namelist file
     parser.set_defaults(testlist=defaults.testlist)
@@ -274,53 +274,46 @@ def main():
 
         # create test object
         mytest = Test(child, options, conf, logger)
+        mytest.options.pert = 0
         
         if mytest.run_test():
             # run test
             try:
 
-                # if upyufiles=True, no model run.
-                if options.upyufiles:
-                    logger.important('Update YU* files mode, no run')
-                    mytest.update_yufiles()
-                #
+                if options.update_reference:
+                    logger.important('Update reference files mode, no test execution')
+                    mytest.update_reference()
                 elif options.update_thresholds:
-                    logger.important('Updating the thresholds on the current runs')
+                    logger.important('Updating the thresholds, no test execution')
                     mytest.options.tune_thresholds = True
                     mytest.log_file = 'exe.log'
                     mytest.check()
-                # if upnamelist=True, no model run.
                 elif options.upnamelist:
-                    logger.important('Update namelist mode, no run')
-                    mytest.prepare() # prepare test directory and update namelists
-                    mytest.update_namelist() #copy back namelist in typedir
-                # Spcial setup for ICON where only check is run
+                    logger.important('Update namelist mode, no test execution')
+                    mytest.prepare()         # prepare test directory and update namelists
+                    mytest.update_namelist() # copy back namelist in typedir
                 elif conf.model == 'icon':
-                    mytest.options.pert = 0
-                    logger.important('Running checks for ICON')
+                    logger.important('Special setup for ICON, no test execution')
                     mytest.log_file = 'final_status.txt'
                     mytest.check()
-                else:
-                    if mytest.options.tune_thresholds:
-                        mytest.options.pert = 0
-                        for i in range(int(mytest.options.tuning_iterations)):
-                            mytest.prepare() # prepare test directory and update namelists
-                            logger.important("Iteration number {0}".format(i+1))
-                            mytest.prerun() # last preparations (dependencies must have finished)
-                            mytest.start()  # start test
-                            mytest.wait()   # wait for completion of test
-                            mytest.check()  # call checkers for this test
-                            mytest.options.reset_thresholds = False
-                            # 1: Perturb only in the first timestep
-                            # 2: Perturb in every iteration
-                            mytest.options.pert = 2
-                    else:
-                        mytest.options.pert = 0
+                elif mytest.options.tune_thresholds:
+                    for i in range(int(mytest.options.tuning_iterations)):
+                        logger.important("Iteration number {0}".format(i+1))
                         mytest.prepare() # prepare test directory and update namelists
                         mytest.prerun() # last preparations (dependencies must have finished)
                         mytest.start()  # start test
                         mytest.wait()   # wait for completion of test
                         mytest.check()  # call checkers for this test
+                        mytest.options.reset_thresholds = False
+                        # 1: Perturb only in the first timestep
+                        # 2: Perturb in every iteration
+                        mytest.options.pert = 2
+                else:
+                    mytest.prepare() # prepare test directory and update namelists
+                    mytest.prerun() # last preparations (dependencies must have finished)
+                    mytest.start()  # start test
+                    mytest.wait()   # wait for completion of test
+                    mytest.check()  # call checkers for this test
 
             except SkipError as smessage:
                 mytest.result = 15 # SKIP
