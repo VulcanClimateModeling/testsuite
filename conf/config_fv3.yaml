@@ -41,3 +41,6 @@ config_nl: logfile.000000.out
 
 # is preturbation necessary
 pert_avail: True
+
+# parameter to enable perturbation
+pert_nml_param: 'perturbation_type'

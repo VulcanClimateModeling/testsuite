@@ -408,9 +408,9 @@ class Test:
     
     def __set_pert(self):
         """set perturbation in the parameter file to true or false depending on the given option"""
-        if self.conf.pert_avail == 'True':
+        if self.conf.pert_avail:
              pert = self.options.pert
-             replace_param(self.conf.par_file,'itype_pert',' itype_pert = %i' %pert)
+             replace_param(self.conf.par_file,self.conf.pert_nml_param,' '+self.conf.pert_nml_param+' = %i' %pert)
 
     def __set_parallelization(self):
 
