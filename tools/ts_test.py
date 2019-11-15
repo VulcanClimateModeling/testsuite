@@ -82,13 +82,16 @@ class Test:
         else:
             self.dependdir = None
 
-        # set executable
+        # set executable (absolute path if pointing to a file and not a command)
         if self.options.exe is not None:
             self.executable = self.options.exe
         elif node.findtext("executable"):
             self.executable = self.node.findtext("executable")
         else:
             raise SkipError('An executable must be defined in the command line or in testlist.xml')
+        if os.path.exists(self.executable):
+            if not os.path.isabs(self.executable):
+                self.executable = os.path.join(self.basedir, self.executable)
 
         # overide nprocs if define in xml
         if node.findtext("nprocs"):
@@ -184,14 +187,14 @@ class Test:
         if self.options.use_wrappers:
             f = open('wrapper.sh','w')
             f.write('#!/bin/sh\n')
-            f.write('./'+self.executable+redirect_output+'\n')
+            f.write(self.exe_command + ' ' + redirect_output + '\n')
             f.close()
             status = os.chmod('wrapper.sh', 0O755)
             if status:
                 raise StopError('Problem changing permissions on wrapper.sh')
             run_cmd = run_cmd + ' ./' + 'wrapper.sh'
         else:
-            run_cmd=run_cmd + ' ./' + self.executable + ' ' + redirect_output
+            run_cmd = run_cmd + ' ' + self.exe_command + ' ' + redirect_output
 
         # displays the run command
         self.logger.info('Executing: '+run_cmd)
@@ -354,15 +357,16 @@ class Test:
     def __setup_executable(self):
 
         # choose the executable
-        if self.executable == None:
+        if self.executable is None:
             raise SkipError('No executable defined in argument list or xml file')
         
-        self.logger.info('Fetching executable '+self.basedir+self.executable)
-
-        # copy of the executable
-        if not os.path.exists(self.basedir+self.executable):
-            raise SkipError('Executable '+self.basedir+self.executable+' does not exist')
-        status = system_command('/bin/cp '+self.basedir+self.executable+' .', self.logger)
+        # copy of the executable (if it exists, might be a command)
+        if os.path.exists(self.executable):
+            self.logger.info('Fetching executable ' + self.executable)
+            status = system_command('/bin/cp ' + self.executable + ' .', self.logger)
+            self.exe_command = './' + os.path.basename(self.executable)
+        else:
+            self.exe_command = self.executable
         
 
     def __adapt_namelists(self):
