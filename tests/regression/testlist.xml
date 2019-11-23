@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testlist>
+
+  <test name="test_basic" type="basic">
+    <description>Basic test</description>
+    <autoparallel>1</autoparallel>
+  </test>
+
+  <test name="test_basic" type="basic">
+    <description>Basic test</description>
+    <autoparallel>2</autoparallel>
+  </test>
+
+  <test name="test_checkers" type="basic">
+    <description>Test checkers</description>
+    <checker>run_success_check.py</checker>
+    <checker>existence_grib_out.sh</checker>
+    <checker>existence_ncdf_out.sh</checker>
+    <checker>identical_check.py</checker>
+    <checker>tolerance_check.py</checker>
+    <checker>output_tolerance_check.py</checker>
+    <autoparallel>1</autoparallel>
+  </test>
+
+</testlist>

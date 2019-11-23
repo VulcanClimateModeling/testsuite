@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 """
 COSMO TECHNICAL TESTSUITE
@@ -58,10 +58,12 @@ def check():
     yufile2 = refoutdir + yufile
     # check if special testsuite output was activated
     if not icon:
-       if get_param(rundir+switch, yuswitch) in ['.FALSE.', '.false.']:
-          if verbosity:
-             print yuswitch +' is set to .false. in '+ rundir + switch +' for this simulation'
-          return 20 # FAIL
+        yuswitch_value = get_param(rundir+switch, yuswitch)
+        assert(yuswitch_value != '')
+        if yuswitch_value in ['.FALSE.', '.false.']:
+            if verbosity:
+               print yuswitch +' is set to .false. in '+ rundir + switch +' for this simulation'
+            return 20 # FAIL
 
     #check if tolerance file exists in namelistdir or type dir
     tolerance_path = namelistdir + tolerance

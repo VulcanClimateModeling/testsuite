@@ -1,0 +1,6 @@
+&ioctl
+  ngribout=1,
+/
+&gribout
+  lcheck=.true.,
+/

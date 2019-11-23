@@ -1,0 +1,12 @@
+
+0     The NAMELIST variables were specified as follows:
+      =================================================
+  
+  
+0     NAMELIST:  runctl
+      -----------------
+  
+      Variable                  Actual Value      Default Value      Format
+       nprocx                              3                  0        I 
+       nprocy                              2                  0        I 
+       nprocio                             0                  0        I 

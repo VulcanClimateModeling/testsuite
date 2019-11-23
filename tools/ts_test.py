@@ -192,14 +192,14 @@ class Test:
         if self.options.use_wrappers:
             f = open('wrapper.sh','w')
             f.write('#!/bin/sh\n')
-            f.write('./'+self.executable+redirect_output+'\n')
+            f.write('./'+self.executable+' '+self.options.args+' '+redirect_output+'\n')
             f.close()
             status = os.chmod('wrapper.sh',0755)
             if status:
                 raise StopError('Problem changing permissions on wrapper.sh')
             run_cmd = run_cmd + ' ./' + 'wrapper.sh'
         else:
-            run_cmd=run_cmd + ' ./' + self.executable + ' ' + redirect_output
+            run_cmd=run_cmd + ' ./' + self.executable + ' ' + self.options.args + ' ' + redirect_output
 
         # displays the run command
         self.logger.info('Executing: '+run_cmd)
@@ -267,7 +267,10 @@ class Test:
             self.logger.debug(checker+' END')
 
         # compute summary result    
-        self.result = max(summary_list)
+        if summary_list:
+            self.result = max(summary_list)
+        else:
+            self.result = 0
 
         # in case of fail or crash signal a stop to the testsuite
         if self.result >= 20:

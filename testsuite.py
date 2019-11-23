@@ -105,6 +105,10 @@ def parse_cmdline():
     parser.add_option("--exe",dest="exe",type="string",
                help="Executable file, [default=<from testlist.xml>]")
 
+    # defines the arguments to pass to the executable
+    parser.set_defaults(args='')
+    parser.add_option("--args",dest="args",type="string", help="Arguments to executable, [default='']")
+
     # defines if the output will be colored or not
     parser.add_option("--color",action="store_true",dest="color",default=False,
                help="Select colored output [default=False]")

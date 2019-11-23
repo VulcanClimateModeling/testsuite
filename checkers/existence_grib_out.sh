@@ -9,6 +9,15 @@
 # Email        cosmo-wg6@cosmo.org
 # Maintainer   xavier.lapillonne@meteoswiss.ch
 
+# this is needed for MacOS X
+gnufind() {
+    if hash gfind 2>/dev/null; then
+        gfind "$@"
+    else
+        find "$@"
+    fi
+}
+
 # check environment variables
 RUNDIR=${TS_RUNDIR}
 VERBOSE=${TS_VERBOSE}
@@ -55,8 +64,8 @@ function grc {
 }
 
 # Regex pattern to match:
-REGEX=".+\/l[bf]ff0+\(_0\)?"
-FILE=$(find ${RUNDIR}/output -regex "${REGEX}") 
+REGEX="..*\/l[bf]ff00*\(_0\)?"
+FILE=$(gnufind ${RUNDIR}/output -regex "${REGEX}") 
 
 # determine number of IO processors
 nprocio=0
@@ -75,12 +84,12 @@ if [ "${nprocio}" -gt 1 ] ; then
   fi
 fi
 # Search for the file again, because grc might have renamed the file
-FILE=$(find ${RUNDIR}/output -regex "${REGEX}") 
+FILE=$(gnufind ${RUNDIR}/output -regex "${REGEX}") 
 
 # check presence of output file
 if [ ! -s "${FILE}" ]; then
   if [ "$VERBOSE" -gt 0 ]; then
-    echo "File $FILE does not exists or is zero size"
+    echo "File $FILE does not exist or is zero size"
   fi
   exit 20 # FAIL
 fi

@@ -1,0 +1,9 @@
+Check the constant data: 
+    File:   output/lfff00000000
+    ie_tot =   70   je_tot =    7   ke_tot =   80
+    
+     var       ee    lev         min      imin   jmin          max      imax   jmax         mean  
+  u           13   1       0.000000    0    0             0.000000    0    0             0.000000
+  v           17   1       0.000000    0    0             0.000000    0    0             0.000000
+  eta         33   1       0.000000    0    0             0.996128    0    0             0.055224
+  KE         102   1       0.000000    0    0             0.000000    0    0             0.000000
