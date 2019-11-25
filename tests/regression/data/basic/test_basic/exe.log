@@ -1,3 +1,6 @@
+WELCOME to model.py, as surrogate atmospheric model for regression testing
+Date and time: 2019-11-24 20:20:54.242219
+Model: COSMO model
 
 ================================================================
 use_coriolis = True
@@ -12,9 +15,492 @@ dy = 10204.08 km
 dt = 32.58 s
 f_0 = 0.0001
 Max alpha = 0.00325791
-
 ================================================================
 
+Timestep =  0
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  1
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  2
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  3
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  4
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  5
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  6
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  7
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  8
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  9
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  10
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  11
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  12
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  13
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  14
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  15
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  16
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  17
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  18
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  19
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  20
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  21
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  22
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  23
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  24
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  25
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  26
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  27
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  28
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  29
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  30
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  31
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  32
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  33
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  34
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  35
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  36
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  37
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  38
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  39
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  40
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  41
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  42
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  43
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  44
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  45
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  46
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  47
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  48
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  49
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  50
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  51
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  52
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  53
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  54
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  55
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  56
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  57
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  58
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  59
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  60
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  61
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  62
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  63
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  64
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  65
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  66
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  67
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  68
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  69
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  70
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  71
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  72
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  73
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  74
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  75
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  76
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  77
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  78
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  79
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  80
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  81
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  82
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  83
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  84
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  85
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  86
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  87
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  88
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  89
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  90
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  91
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  92
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  93
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  94
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  95
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  96
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  97
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  98
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  99
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  100
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  101
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  102
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  103
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  104
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  105
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  106
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  107
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  108
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  109
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  110
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  111
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  112
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  113
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  114
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  115
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  116
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  117
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  118
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  119
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
+Timestep =  120
+>>> perturbing u with amplitude 1.000000E-15
+>>> perturbing v with amplitude 1.000000E-15
+>>> perturbing eta with amplitude 1.000000E-15
 Main computation loop done!
-Execution time: 0.03 s
+Execution time: 0.08 s
 CLEAN UP

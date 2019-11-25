@@ -46,7 +46,7 @@ def run_checker():
             OccurrenceCrashPattern(     "Cleanup pattern",      "(.*)^(.*)CLEAN(\s*)UP(.*)" )
         ]
 
-    cosmo_filechecker = FileChecker()
+    cosmo_filechecker = FileChecker(verbose)
     cosmo_filechecker.add_pattern_list(patterns)
     return cosmo_filechecker.check(logfile, verbose)
 

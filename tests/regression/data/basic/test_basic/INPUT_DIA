@@ -1,4 +1,4 @@
 &diactl
- ltestsuite=.TRUE.,
+  ltestsuite=.TRUE.,
 /END
 

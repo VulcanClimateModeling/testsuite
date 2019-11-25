@@ -20,7 +20,7 @@ import ast
 # private modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "./tools")) # this is the generic folder for subroutines
 from ts_error import StopError, SkipError
-from ts_utilities import system_command, change_dir
+from ts_utilities import system_command, change_dir, timeout_supported
 import ts_logger as LG
 from ts_test import Test
 from default_values import DefaultValues
@@ -35,7 +35,7 @@ __email__      = "cosmo-wg6@cosmo.org"
 __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 
 
-def parse_config_file(filename):
+def parse_config_file(filename, logger):
     config = ConfigParser.RawConfigParser()
 
     # create empty conf object
@@ -62,6 +62,7 @@ def parse_config_file(filename):
         print(e)
         raise # this exits with full traceback
         
+    logger.important('Configuration file: ' + filename)
     return conf 
 
 
@@ -194,6 +195,8 @@ def parse_cmdline():
     except (OP.OptionError,TypeError):
         sys.exit("problem parsing command line arguments (check ./testsuite.py -h for valid arguments)")
 
+    if options.timeout and not timeout_supported:
+        sys.exit('Timeout is not supported by subprocess.')
     return options
 
 
@@ -207,26 +210,23 @@ def parse_xmlfile(filename, logger):
         sys.exit(1) # this exits without traceback
         #raise # this exits with full traceback
 
+    logger.important('XML file: ' + filename)
+
     return xmltree.getroot()
 
 
 def setup_logger(options):
-
-    # instantiate logger class
     logger = LG.Logger(options.stdout, options.outappend, options.color)
-
-    # set verbosity level
     if options.v_level <= 0:
-      logger.setLevel(LG.ERROR)
+        logger.setLevel(LG.ERROR)
     elif options.v_level == 1:
-      logger.setLevel(LG.WARNING)
+        logger.setLevel(LG.WARNING)
     elif options.v_level == 2:
-      logger.setLevel(LG.INFO)
+        logger.setLevel(LG.INFO)
     elif options.v_level >= 3:
-      logger.setLevel(LG.DEBUG)
-
+        logger.setLevel(LG.DEBUG)
     return logger
-    
+ 
 
 def main():
     """read configuration and then execute tests"""
@@ -237,28 +237,27 @@ def main():
     # parse command line arguments
     options = parse_cmdline()
 
-    if os.path.isfile(options.config_file): 
-       conf = parse_config_file(options.config_file)
-    elif os.path.isfile(os.path.join(os.path.dirname(__file__),options.config_file)):
-       conf = parse_config_file(os.path.join(os.path.dirname(__file__),options.config_file))     
-    else:
-        #logger not initialize at this stage, use print and exit
-        print('Error: Missing configuration file '+options.config_file)
-        sys.exit(1)
-
-
-        
     # redirect standard output (if required)
     logger = setup_logger(options)
-
-    # hello world!
     logger.important('TESTSUITE '+__version__)
 
+    # read configuration file
+    if os.path.isfile(options.config_file): 
+        config_filepath = options.config_file
+    elif os.path.isfile(os.path.join(os.path.dirname(__file__),options.config_file)):
+        config_filepath = os.path.join(os.path.dirname(__file__),options.config_file)
+    else:
+        # logger not initialized at this stage, use print and exit
+        print('Error: Missing configuration file '+options.config_file)
+        sys.exit(1)
+    conf = parse_config_file(config_filepath, logger)
+
     # parse the .xml file which contains the test definitions
-    logger.info('Parsing XML ('+options.testlist+')')
     root = parse_xmlfile(options.testlist, logger)
 
     # generate work directory
+    if not os.path.isabs(options.workdir):
+        options.workdir = os.path.join(os.getcwd(), options.workdir)
     status = system_command('/bin/mkdir -p '+options.workdir+'/', logger, throw_exception=False)
     if status:
       exit(status)
@@ -324,8 +323,8 @@ def main():
             except StopError as emessage:
                 if str(emessage).strip():
                     logger.error(emessage)
-                    if not options.force:
-                        stop = True
+                if not options.force:
+                    stop = True
 
             # write result
             mytest.write_result()

@@ -11,7 +11,7 @@ config="--config-file=config.cfg"
 
 \rm -f testsuite.out
 
-${testsuite} ${config} -n 6 --nprocio 0 -v 1 --color -f --exe="${exe}" --args="${args}" --tolerance=TOLERANCE --testlist=testlist.xml --mpicmd='' $*
+${testsuite} ${config} -v 1 --color --args="${args}" --tolerance=TOLERANCE --testlist=testlist.xml --mpicmd='' $*
 
 exit 0
 

@@ -30,6 +30,10 @@ import f90nml
 import argparse
 import os
 import shutil
+import datetime
+
+print("WELCOME to model.py, as surrogate atmospheric model for regression testing")
+print("Date and time:", datetime.datetime.now())
 
 parser = argparse.ArgumentParser(description='Surrogate model.')
 parser.add_argument('--model', dest='model', action='store', type=str, default='none', help='which model to emulate (default: none)')
@@ -37,8 +41,10 @@ args = parser.parse_args()
 
 d = {}
 if args.model == 'none':
+    print('Model: plain model')
     pass
 elif args.model == 'cosmo':
+    print('Model: COSMO model')
     d['input_nml'] = 'INPUT_ORG'
     d['pert_nl_group'] = 'runctl'
     d['pert_type'] = 'itype_pert'
@@ -50,13 +56,17 @@ elif args.model == 'cosmo':
     d['stat_onoff_flag'] = 'ltestsuite'
     d['nt_filename'] = 'INPUT_ORG'
     d['nt_nl_group'] = 'runctl'
-    d['nt_hours'] = 'hstop'
-    d['nt_timesteps'] = 'nstop'
+    d['nt_start_hours'] = 'hstart'
+    d['nt_start_timesteps'] = 'nstart'
+    d['nt_end_hours'] = 'hstop'
+    d['nt_end_timesteps'] = 'nstop'
     d['aux_files'] = ['aux_dummy']
     d['input_dirname'] = 'input'
     d['input_files'] = ['in_dummy']
     d['output_dirname'] = 'output'
+    d['restart_dirname'] = 'output'
 elif args.model == 'fv3':
+    print('Model: FV3 model')
     d['input_nml'] = 'input.nml'
     d['pert_nl_group'] = 'fv_core_nml'
     d['pert_type'] = 'perturbation_type'
@@ -74,6 +84,17 @@ elif args.model == 'fv3':
     d['input_dirname'] = 'INPUT'
     d['input_files'] = ['in_dummy']
     d['output_dirname'] = 'OUTPUT'
+    d['restart_dirname'] = 'RESTART'
+    with open('final_status.txt','w') as status_file:
+        status_file.write(success_message + '\n')
+elif args.model == 'icon':
+    print('Model: ICON model')
+    d['input_nml'] = 'INPUT_ORG'
+    d['stat_filename'] = 'YUPRTEST'
+    d['iostat_filename'] = 'YUCHKDAT'
+    d['success_message'] = '0'
+    d['output_dirname'] = 'output'
+    d['restart_dirname'] = 'output'
 else:
     print('ERROR: unknown model specified')
     exit(1)
@@ -101,7 +122,8 @@ param_string += "\nuse_coriolis = {}".format(use_coriolis)
 param_string += "\nuse_friction = {}\nuse_wind = {}".format(use_friction, use_wind)
 param_string += "\nuse_source = {}\nuse_sink = {}".format(use_source, use_sink)
 param_string += "\ng = {:g}\nH = {:g}".format(g, H)
-output_freq = 60
+output_freq = 30
+restart_freq = 60
 
 # --------------- Computational prameters ---------------
 N_x = 50                             # Number of grid points in x-direction
@@ -110,13 +132,18 @@ dx = L_x/(N_x - 1)                   # Grid spacing in x-direction
 dy = L_y/(N_y - 1)                   # Grid spacing in y-direction
 dt = 0.1*min(dx, dy)/np.sqrt(g*H)    # Time step (defined from the CFL condition)
 time_step = 0                        # For counting time loop steps
-max_time_step = 100                  # Total number of time steps in simulation
+start_time_step = 0                  # Start time step (for restart runs)
+end_time_step = 100                  # Total number of time steps in simulation
 if 'nt_filename' in d:
     nml = f90nml.read(d['input_nml'])
-    if d['nt_hours'] in nml[d['nt_nl_group']]:
-        max_time_step = nml[d['nt_nl_group']][d['nt_hours']] * 60
-    if d['nt_timesteps'] in nml[d['nt_nl_group']]:
-        max_time_step = nml[d['nt_nl_group']][d['nt_timesteps']]
+    if d['nt_end_hours'] in nml[d['nt_nl_group']]:
+        end_time_step = nml[d['nt_nl_group']][d['nt_end_hours']] * 60
+    if d['nt_end_timesteps'] in nml[d['nt_nl_group']]:
+        end_time_step = nml[d['nt_nl_group']][d['nt_end_timesteps']]
+    if d['nt_start_hours'] in nml[d['nt_nl_group']]:
+        start_time_step = nml[d['nt_nl_group']][d['nt_start_hours']] * 60
+    if d['nt_start_timesteps'] in nml[d['nt_nl_group']]:
+        start_time_step = nml[d['nt_nl_group']][d['nt_start_timesteps']]
 x = np.linspace(-L_x/2, L_x/2, N_x)  # Array with x-points
 y = np.linspace(-L_y/2, L_y/2, N_y)  # Array with y-points
 X, Y = np.meshgrid(x, y)             # Meshgrid for plotting
@@ -129,10 +156,12 @@ perturbation_type = 0
 perturbation_amplitude = 10.0**(-15)
 if 'input_nml' in d:
     nml = f90nml.read(d['input_nml'])
-    if d['pert_type'] in nml[d['pert_nl_group']]:
-        perturbation_type = nml[d['pert_nl_group']][d['pert_type']]
-    if d['pert_ampl'] in nml[d['pert_nl_group']]:
-        perturbation_amplitude = nml[d['pert_nl_group']][d['pert_ampl']]
+    if 'pert_type' in d:
+        if d['pert_type'] in nml[d['pert_nl_group']]:
+            perturbation_type = nml[d['pert_nl_group']][d['pert_type']]
+    if 'pert_ampl' in d:
+        if d['pert_ampl'] in nml[d['pert_nl_group']]:
+            perturbation_amplitude = nml[d['pert_nl_group']][d['pert_ampl']]
 
 # Define friction array if friction is enabled.
 if (use_friction is True):
@@ -154,7 +183,7 @@ if (use_coriolis is True):
     beta_c = alpha**2/4         # Parameter needed for coriolis scheme
 
     param_string += "\nf_0 = {:g}".format(f_0)
-    param_string += "\nMax alpha = {:g}\n".format(alpha.max())
+    param_string += "\nMax alpha = {:g}".format(alpha.max())
     param_string += "\n================================================================\n"
 
 # Define source array if source is enabled.
@@ -319,8 +348,8 @@ def write_iostat_file(nt, ee, field, fieldname, filename):
     if IOSTAT_WRITE_HEADER:
         IOSTAT_WRITE_HEADER = False
         with open(d['iostat_filename'], "w+") as iostat_file:
-            iostat_file.write(
-'''Check the constant data: 
+            iostat_file.write('''
+Check the file data: 
     File:   %s
     ie_tot =   70   je_tot =    7   ke_tot =   80
     
@@ -331,7 +360,7 @@ def write_iostat_file(nt, ee, field, fieldname, filename):
 
 def write_output(nt, u, v, eta):
     global IOSTAT_WRITE_HEADER
-    IOSTAT_WRITE_HEADER
+    IOSTAT_WRITE_HEADER = True
     output_filename = 'lfff' + format(time_step, '>08d')
     if 'output_dirname' in d:
         output_filename = os.path.join(d['output_dirname'], output_filename)
@@ -347,18 +376,32 @@ def write_output(nt, u, v, eta):
         write_iostat_file(nt, 102, u*u+v*v, 'KE', output_filename)
     shutil.copyfile(output_filename, output_filename+'.nc')
 
+def write_restart(nt, u, v, eta):
+    restart_filename = 'lrff' + format(time_step, '>08d')
+    if 'restart_dirname' in d:
+        restart_filename = os.path.join(d['restart_dirname'], restart_filename)
+    with open(restart_filename,'wb') as restart_file:
+        restart_file.write(bytes('GRIB','utf-8'))
+        np.save(restart_file,u)
+        np.save(restart_file,v)
+        np.save(restart_file,eta)
+
 # ==================================================================================
 # ========================= Main time loop for simulation ==========================
 # ==================================================================================
 
 t_0 = time.perf_counter_ns()  # For timing the computation loop
 
-while (time_step < max_time_step):
+while (time_step <= end_time_step):
 
-    if time_step % output_freq == 0:
-        write_output(time_step, u_n, v_n, eta_n)
+    if time_step >= start_time_step:
+        print("Timestep = ", time_step)
+        if time_step % output_freq == 0:
+            write_output(time_step, u_n, v_n, eta_n)
+        if time_step % restart_freq == 0:
+            write_restart(time_step, u_n, v_n, eta_n)
+        write_stat_file(time_step, u_n, v_n, eta_n)
 
-    write_stat_file(time_step, u_n, v_n, eta_n)
     perturb(time_step, u_n, v_n, eta_n)
 
     # ------------ Computing values for u and v at next time step --------------
@@ -428,6 +471,7 @@ while (time_step < max_time_step):
     time_step += 1
 
 # ============================= Main time loop done ================================
+
 print("Main computation loop done!\nExecution time: {:.2f} s".format((time.perf_counter_ns() - t_0)/1.0e9))
 
 if 'success_message' in d:

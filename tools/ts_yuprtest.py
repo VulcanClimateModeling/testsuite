@@ -275,7 +275,7 @@ class Compare(object):
         """print results"""
         print('%5s  %s  %7s  %s' % (
             'nt', '  '.join(['%9s' % x for x in self._threshold.variables + ['other']]), 'status', 'reason'))
-        for step in [str(x) for x in self._yu1.steps]:
+        for step in [str(x) for x in sorted(set(self._yu1.steps) & set(self._yu2.steps))]:
             vals = [self._maxdiff[step][x][2] for x in self._threshold.variables + ['*']]
             stat = ["MATCH", "OK", "FAIL"][self._status[step]]
             reason = 'none'

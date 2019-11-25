@@ -7,6 +7,6 @@
       -----------------
   
       Variable                  Actual Value      Default Value      Format
-       nprocx                              3                  0        I 
-       nprocy                              2                  0        I 
+       nprocx                              4                  0        I 
+       nprocy                              4                  0        I 
        nprocio                             0                  0        I 

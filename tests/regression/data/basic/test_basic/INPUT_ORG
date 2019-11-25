@@ -1,6 +1,7 @@
 &runctl
   dt=60.0,
-  hstop=1.0,
+  hstart=0.0,
+  hstop=2.0,
   nprocx=1,
   nprocy=1,
   nprocio=0,

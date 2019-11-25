@@ -45,7 +45,7 @@ class Test:
         self.basedir = dir_path(conf.basedir)
         self.inputdir = dir_path(self.basedir + 'data/' + self.type) # set path for input directory
 
-        self.rundir = dir_path(self.basedir) + dir_path(options.workdir) + dir_path(self.type) + dir_path(self.name)
+        self.rundir = dir_path(options.workdir) + dir_path(self.type) + dir_path(self.name)
         if node.findtext('namelistdir'):
             self.namelistdir = dir_path(self.basedir + 'data/' + node.findtext('namelistdir'))
         else:
@@ -151,7 +151,7 @@ class Test:
                #     raise SkipError('Required test %s has been skipped' %(self.dependdir))
             except IOError:
                 raise SkipError('No result file %s for required test %s' \
-                                %(self.conf.res_file,self.dependdir))
+                                %(self.conf.res_file, self.dependdir))
 
         # defines the procedures in case of restart test
         if 'restart' in self.prerun_actions:
@@ -421,7 +421,7 @@ class Test:
         """set perturbation in the parameter file to true or false depending on the given option"""
         if self.conf.pert_avail == 'True':
              pert = self.options.pert
-             replace_param(self.conf.par_file,'itype_pert',' itype_pert = %i' %pert)
+             replace_param(self.conf.par_file,'itype_pert',' itype_pert=%i' %pert)
 
     def __set_parallelization(self):
 
@@ -441,30 +441,34 @@ class Test:
         # sets the number of I/O processors
         if get_param(self.conf.par_file,'num_iope_percomm') != '':
            if nprocio == 0:
-              replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm= 0')
+              replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm=0')
               replace_param(self.conf.io_file,'lasync_io',' lasync_io=.FALSE.')
 
            else:   
-              replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm= 1')
+              replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm=1')
               replace_param(self.conf.io_file,'lasync_io',' lasync_io=.TRUE.')
-           replace_param(self.conf.par_file,'num_asynio_comm',' num_asynio_comm= %i' %nprocio)
+           replace_param(self.conf.par_file,'num_asynio_comm',' num_asynio_comm=%i' %nprocio)
         else:
-           replace_param(self.conf.par_file,'nprocio',' nprocio= %i' %nprocio)
+           replace_param(self.conf.par_file,'nprocio',' nprocio=%i' %nprocio)
 
         # generates the parallelist
         parlist = []
         parlist = self.set_parallelization(self.nprocs,nprocio)
 
         # select the parallelization
-        ap = int(self.node.findtext("autoparallel"))
+        ap = self.node.findtext("autoparallel")
+        if ap:
+            ap = int(ap)
+        else:
+            ap = 1
         if ap > len(parlist):
             raise SkipError('The selected autoparallel number is too large for the given number of processor (not enough decompositions available)')
 
         # writes the new MPI decomposition
         nprocx = parlist[ap-1][0]
         nprocy = parlist[ap-1][1]
-        replace_param(self.conf.par_file, 'nprocx', ' nprocx= %i' %nprocx)
-        replace_param(self.conf.par_file, 'nprocy', ' nprocy= %i' %nprocy)
+        replace_param(self.conf.par_file, 'nprocx', ' nprocx=%i' %nprocx)
+        replace_param(self.conf.par_file, 'nprocy', ' nprocy=%i' %nprocy)
                                  
         # echo to log
         self.logger.info('Processors distribution set to ' + 

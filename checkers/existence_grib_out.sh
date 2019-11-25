@@ -10,11 +10,11 @@
 # Maintainer   xavier.lapillonne@meteoswiss.ch
 
 # this is needed for MacOS X
-gnufind() {
+find_one_file() {
     if hash gfind 2>/dev/null; then
-        gfind "$@"
+        gfind "$@" | head -1
     else
-        find "$@"
+        find "$@" | head -1
     fi
 }
 
@@ -64,8 +64,16 @@ function grc {
 }
 
 # Regex pattern to match:
-REGEX="..*\/l[bf]ff00*\(_0\)?"
-FILE=$(gnufind ${RUNDIR}/output -regex "${REGEX}") 
+REGEX="..*\/l[bf]ff0[0-9]*\(_0\)?"
+FILE=$(find_one_file ${RUNDIR}/output -regex "${REGEX}")
+
+# check if files exist
+if [ -z "${FILE}" ]; then
+  if [ "$VERBOSE" -gt 0 ]; then
+    echo "No grib output files found"
+  fi
+  exit 20 # FAIL
+fi
 
 # determine number of IO processors
 nprocio=0
@@ -83,8 +91,9 @@ if [ "${nprocio}" -gt 1 ] ; then
     cd ${cwd}
   fi
 fi
+
 # Search for the file again, because grc might have renamed the file
-FILE=$(gnufind ${RUNDIR}/output -regex "${REGEX}") 
+FILE=$(find_one_file ${RUNDIR}/output -regex "${REGEX}")
 
 # check presence of output file
 if [ ! -s "${FILE}" ]; then
