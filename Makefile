@@ -6,6 +6,5 @@ help: ## display help on Makefile targets
 .DEFAULT_GOAL := help
 
 test: ## run tests
-	cd tests/regression; \
-	pytest -v -s
+	pytest -v -s --ignore=tools/ts_test.py
 
