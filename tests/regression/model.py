@@ -390,8 +390,6 @@ def write_restart(nt, u, v, eta):
 # ========================= Main time loop for simulation ==========================
 # ==================================================================================
 
-t_0 = time.perf_counter_ns()  # For timing the computation loop
-
 while (time_step <= end_time_step):
 
     if time_step >= start_time_step:
@@ -472,7 +470,7 @@ while (time_step <= end_time_step):
 
 # ============================= Main time loop done ================================
 
-print("Main computation loop done!\nExecution time: {:.2f} s".format((time.perf_counter_ns() - t_0)/1.0e9))
+print("Main computation loop done!")
 
 if 'success_message' in d:
     print(d['success_message'])
