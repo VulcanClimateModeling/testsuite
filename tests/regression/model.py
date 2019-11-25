@@ -162,6 +162,8 @@ if 'input_nml' in d:
     if 'pert_ampl' in d:
         if d['pert_ampl'] in nml[d['pert_nl_group']]:
             perturbation_amplitude = nml[d['pert_nl_group']][d['pert_ampl']]
+    if 'extra_option' in nml[d['pert_nl_group']]:
+        print('\n\n>>> Extra namelist option activated <<<\n\n')
 
 # Define friction array if friction is enabled.
 if (use_friction is True):

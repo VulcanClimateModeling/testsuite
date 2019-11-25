@@ -239,7 +239,7 @@ class Test:
             self.forcematch=1
         else:
             self.forcematch=0
-            
+
         # assignement of the environment variables for checker
         write_environ(self)
 
@@ -260,13 +260,13 @@ class Test:
 
 
             summary_list.append(checker_result)
-                
+
             # display the subsummary for the checkers
             self.logger.result(1, checker_result, checker)
-            
+
             self.logger.debug(checker+' END')
 
-        # compute summary result    
+        # compute summary result
         if summary_list:
             self.result = max(summary_list)
         else:
@@ -280,7 +280,7 @@ class Test:
     def write_result(self):
         """print result of current test to stdout as well as result file"""
 
-        # print the final result 
+        # print the final result
         self.logger.result(0, self.result, 'RESULT %s/%s: %s' %(self.type,self.name,self.description))
 
         # change to run directory for this test
@@ -290,8 +290,7 @@ class Test:
         f = open(self.conf.res_file, "w")
         f.write(status_str(self.result))
         f.close()
-       
-       
+
 
     def update_namelist(self):
         """copy back modified namelists into data folder"""
@@ -302,18 +301,18 @@ class Test:
         # checks if is the test is a titular test
         if re.match(pattern,text):
             status = change_dir(self.rundir, self.logger)
-            self.logger.important('Updating namelist data/'+self.type+'/'+self.name)
-            cmd = 'cp INPUT* '+self.namelistdir
-            self.logger.debug('Executing: '+cmd)
+            self.logger.important('Updating namelist data/' + self.type + '/' + self.name)
+            cmd = 'cp INPUT* ' + self.namelistdir
+            self.logger.debug('Executing: ' + cmd)
             status = system_command(cmd, self.logger)
             self.result = 0 # MATCH
         else:
-            raise SkipError('No test repository ' +'data/'+self.type+'/'+self.name)
+            raise SkipError('No test repository ' + 'data/' + self.type + '/' + self.name)
 
     def update_yufiles(self):
         """copy back YU* files into the data folder
         Should be used to generate new reference files"""
-        
+
 
         pattern = '(.*)/'+self.type+'/'+self.name+'(.*)'
         # only update base test, i.e. where test name is the same as self.namelistdir
@@ -348,7 +347,7 @@ class Test:
 
         # removal of all the possible pre-existing files
         status = system_command('/bin/rm -r -f *', self.logger)
-        
+
         # explicit copy of the namelists (copy is required since we will apply the change_par)
         status = system_command('/bin/cp -f '+self.namelistdir+'INPUT* .', self.logger)
 
@@ -367,19 +366,19 @@ class Test:
         # choose the executable
         if self.executable == None:
             raise SkipError('No executable defined in argument list or xml file')
-        
+
         self.logger.info('Fetching executable '+self.basedir+self.executable)
 
         # copy of the executable
         if not os.path.exists(self.basedir+self.executable):
             raise SkipError('Executable '+self.basedir+self.executable+' does not exist')
         status = system_command('/bin/cp '+self.basedir+self.executable+' .', self.logger)
-        
+
 
     def __adapt_namelists(self):
 
         self.logger.info('Modify namelists (according to XML specification)')
-        
+
         # change_par from the xml file
         changepar_list = self.node.findall("changepar")
 
@@ -392,7 +391,7 @@ class Test:
 
             filename = str(filename)
             newparname = str(chpar.attrib['name'])
-            
+
             # look if optional attribute occurrence exists
             try:
                 occurrence = int(chpar.attrib['occurrence'])
@@ -406,7 +405,7 @@ class Test:
                     if get_param(filename,parname,occurrence=occurrence) == '':
                         parname = param2
                 if param2 == parname:
-                    if get_param(filename,parname,occurrence=occurrence) == '':     
+                    if get_param(filename,parname,occurrence=occurrence) == '':
                         parname = param1
 
             value = chpar.text
@@ -416,7 +415,7 @@ class Test:
             # if nprocio has been overwritten, remove configuration (XML should have precedence)
             if parname == 'nprocio':
                 self.options.nprocio = None
-    
+
     def __set_pert(self):
         """set perturbation in the parameter file to true or false depending on the given option"""
         if self.conf.pert_avail == 'True':
@@ -444,7 +443,7 @@ class Test:
               replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm=0')
               replace_param(self.conf.io_file,'lasync_io',' lasync_io=.FALSE.')
 
-           else:   
+           else:
               replace_param(self.conf.par_file,'num_iope_percomm',' num_iope_percomm=1')
               replace_param(self.conf.io_file,'lasync_io',' lasync_io=.TRUE.')
            replace_param(self.conf.par_file,'num_asynio_comm',' num_asynio_comm=%i' %nprocio)
@@ -469,14 +468,14 @@ class Test:
         nprocy = parlist[ap-1][1]
         replace_param(self.conf.par_file, 'nprocx', ' nprocx=%i' %nprocx)
         replace_param(self.conf.par_file, 'nprocy', ' nprocy=%i' %nprocy)
-                                 
+
         # echo to log
-        self.logger.info('Processors distribution set to ' + 
+        self.logger.info('Processors distribution set to ' +
             '(nprocx,nprocy,nprocio)=(%i,%i,%i)' %(nprocx, nprocy, nprocio))
 
 
     def __set_timesteps(self):
- 
+
         if self.options.steps is not None:
 
             self.logger.info('Number of timesteps (nstop=%i)' %(self.options.steps))
@@ -502,7 +501,7 @@ class Test:
         for i in range(nxy,0,-1):
             if nxy%i == 0:
                 parlist.append([i,nxy/i])
-        
+
         # sort parlist by aspect ratio of solutions
         parlist = sorted(parlist, key=lambda tuple: aspect_ratio(tuple[0],tuple[1]))
 
@@ -512,8 +511,8 @@ class Test:
         ##     parlist[0] = parlist[-2]
         ##     parlist[-2] = par_tmp
 
-        return parlist    
-    
+        return parlist
+
 
 def aspect_ratio(nprocx,nprocy):
     """compute aspect ratio of decomposition"""
@@ -523,5 +522,3 @@ def aspect_ratio(nprocx,nprocy):
         return nprocx/nprocy
     else:
         return nprocy/nprocx
-
-

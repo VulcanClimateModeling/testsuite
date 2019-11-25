@@ -490,11 +490,24 @@ def test_update_namelist_argument():
     check_successful_run(exit_status, stdout, stderr)
     log = read_exe_logfile('basic/test_basic')
     assert 'Extra namelist option' not in log
-    # TODO: check for command line argument --update-namelist
-    # exit_status, stdout, stderr = run_testsuite(['--only=basic,test_basic'])
-    # check_successful_run(exit_status, stdout, stderr)
-    # log = read_exe_logfile('basic/test_basic')
-    # assert 'Extra namelist option' not in log
+    # change namelist and update data directory (explicitly remove working directory)
+    nml_file = WORKDIR + '/basic/test_basic/INPUT_ORG'
+    nml = f90nml.read(nml_file)
+    nml['runctl']['hstart'] = 1.0
+    nml['runctl']['extra_option'] = True
+    f90nml.write(nml, nml_file, force=True)
+    exit_status, stdout, stderr = run_testsuite(['--only=basic,test_basic',
+        '--update-namelist', '-v 10'], clean_before=False)
+    check_successful_run(exit_status, stdout, stderr)
+    clean_working_directory()
+    # run with modified namelist parameters
+    exit_status, stdout, stderr = run_testsuite(['--only=basic,test_basic'],
+        clean_before=False)
+    results = check_successful_run(exit_status, stdout, stderr)
+    log = read_exe_logfile('basic/test_basic')
+    assert 'Extra namelist option activated' in log
+    timesteps = count_timesteps_in_stats_file(WORKDIR + '/basic/test_basic/YUPRTEST')
+    assert timesteps == list(range(60, 121, 10))
     clean_data_directory()
 
 
@@ -504,17 +517,6 @@ def test_mpicmd_argument():
     check_successful_run(exit_status, stdout, stderr)
     log = read_exe_logfile('basic/test_plain')
     assert 'Running on 16 MPI ranks' in log
-
-
-# TODO: ICON test is currently not working
-# def test_icon_argument():
-# 	# first run a plain test
-# 	exit_status, stdout, stderr = run_testsuite(['--only=basic,test_basic', '--args="--model=icon"'])
-# 	check_successful_run(exit_status, stdout, stderr)
-# 	# now run with the icon flag
-# 	exit_status, stdout, stderr = run_testsuite(['--only=basic,test_basic','--icon'], clean_before=False)
-# 	check_successful_run(exit_status, stdout, stderr)
-# 	assert 'Running checks for ICON' in stdout
 
 
 def test_identical_testcase():
@@ -563,6 +565,17 @@ def test_restart_testcase():
     check_successful_run(exit_status, stdout, stderr)
     timesteps = count_timesteps_in_stats_file(WORKDIR + '/basic/test_restart/YUPRTEST')
     assert timesteps == list(range(60, 121, 10))
+
+
+# TODO: ICON test is currently not working
+# def test_icon_argument():
+# 	# first run a plain test
+# 	exit_status, stdout, stderr = run_testsuite(['--only=basic,test_basic', '--args="--model=icon"'])
+# 	check_successful_run(exit_status, stdout, stderr)
+# 	# now run with the icon flag
+# 	exit_status, stdout, stderr = run_testsuite(['--only=basic,test_basic','--icon'], clean_before=False)
+# 	check_successful_run(exit_status, stdout, stderr)
+# 	assert 'Running checks for ICON' in stdout
 
 
 def test_full_testlist_from_xml():
