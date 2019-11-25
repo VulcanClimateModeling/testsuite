@@ -1,3 +1,5 @@
+SHELL = /bin/bash
+
 .PHONY: help test
 
 help: ## display help on Makefile targets
@@ -6,5 +8,7 @@ help: ## display help on Makefile targets
 .DEFAULT_GOAL := help
 
 test: ## run tests
-	pytest -v -s --ignore=tools/ts_test.py
-
+	cd tests/regression; \
+	. env.sh; \
+	. env/bin/activate; \
+	pytest -v -s
