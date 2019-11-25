@@ -1,3 +1,5 @@
+SHELL = /bin/bash
+
 .PHONY: help test
 
 help: ## display help on Makefile targets
@@ -7,5 +9,7 @@ help: ## display help on Makefile targets
 
 test: ## run tests
 	cd tests/regression; \
+	. env.sh; \
+	. env/bin/activate; \
 	pytest -v -s
 
