@@ -191,9 +191,9 @@ def parse_cmdline():
                help=("Name of the testsuite configuration file [default=%s]" % DefaultValues.config_file))
     # parse
     try:
-        (options,args)=parser.parse_args()
-    except (OP.OptionError,TypeError):
-        sys.exit("problem parsing command line arguments (check ./testsuite.py -h for valid arguments)")
+        (options, args) = parser.parse_args()
+    except (OP.OptionError, TypeError):
+        sys.exit("Problem parsing command line arguments (check ./testsuite.py -h for valid arguments)")
 
     if options.timeout and not timeout_supported:
         sys.exit('Timeout is not supported by subprocess.')
@@ -205,7 +205,7 @@ def parse_xmlfile(filename, logger):
     try:
         xmltree = XML.parse(filename)
     except Exception as e:
-        logger.error('Error while reading xml file '+filename+':')
+        logger.error('Error while reading xml file ' + filename + ':')
         logger.error(e)
         sys.exit(1) # this exits without traceback
         #raise # this exits with full traceback

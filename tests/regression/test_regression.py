@@ -27,6 +27,16 @@ OUTFILE = os.path.join(TMPDIR.name, 'testsuite.out')
 # invocation of testsuite
 TESTSUITE_CMD = '../../testsuite.py'
 
+# check if we want to do code coverage analysis
+# note: this is required, since the regression tests use subprocess to call the testsuite
+COVERAGE = False
+if COVERAGE:
+    try:
+        os.remove(".coverage")
+    except OSError:
+        pass
+    TESTSUITE_CMD = 'coverage run -a ' + TESTSUITE_CMD
+
 # default arguments when invoking testsuite (can be overriden)
 DEFAULT_ARGUMENTS = [
     '--config-file=config.cfg',
