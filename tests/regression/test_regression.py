@@ -149,26 +149,29 @@ def check_test_results(exit_status, stdout, stderr):
     number_of_fails = number_of_lines_with_pattern(' FAIL ', results)
     number_of_skips = number_of_lines_with_pattern(' SKIP ', results)
     number_of_crashes = number_of_lines_with_pattern(' CRASH ', results)
+    number_of_unknowns = number_of_lines_with_pattern(' UNKNOWN ', results)
     return {'error': number_of_errors,
             'warning': number_of_warnings,
             'match': number_of_matches,
             'ok': number_of_oks,
             'fail': number_of_fails,
             'skip': number_of_skips,
-            'crash': number_of_crashes}
+            'crash': number_of_crashes,
+            'unknown': number_of_unknowns}
 
 
 def check_successful_run(exit_status, stdout, stderr, force_match=False):
     results = check_test_results(exit_status, stdout, stderr)
-    problems = results['error'] + results['warning'] + results['fail'] + \
-               results['skip'] + results['crash']
-    if problems:
+    problem = results['error'] + results['warning'] + results['fail'] + \
+               results['skip'] + results['crash'] + results['unknown']
+    if problem:
         print('\n\n>>> stdout\n' + stdout)
     assert results['error'] == 0
     assert results['warning'] == 0
     assert results['fail'] == 0
     assert results['skip'] == 0
     assert results['crash'] == 0
+    assert results['unknown'] == 0
     if force_match:
         assert results['ok'] == 0
     return results
