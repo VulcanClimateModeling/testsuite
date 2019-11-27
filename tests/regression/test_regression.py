@@ -46,15 +46,6 @@ DEFAULT_ARGUMENTS = [
     '--mpicmd=',
     '--workdir=' + WORKDIR]
 
-# make sure temporary data directory is removed after tests
-class TemporaryDataDirectory(object):
-    def __init__(self, dirname):
-        self.dirname = dirname
-        os.mkdir(dirname)
-    def __del__(self):
-        shutil.rmtree(self.dirname)
-DATADIR_OBJECT = TemporaryDataDirectory(DATADIR)
-
 
 def run_cmd(cmd):
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
