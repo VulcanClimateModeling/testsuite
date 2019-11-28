@@ -14,7 +14,6 @@ import os, sys
 # private modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "../tools"))
 from ts_utilities import read_environ, dir_path, str_to_bool
-from ts_fortran_nl import get_param
 from comp_table import cmp_table
 import ts_thresholds
 

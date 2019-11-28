@@ -57,7 +57,9 @@ def check():
 
         # extract timestep
         try:
-            dt = float(get_param(rundir+nlfile2, 'dt'))
+            dt = get_param(rundir+nlfile2, 'dt')
+            assert(dt != '')
+            dt = float(dt)
         except:
             if verbose:
                 print header+'failed to extract dt from '+rundir+nlfile2
@@ -66,13 +68,17 @@ def check():
         # check for output lists
         try:
             nout_list = get_param(rundir+nlfile, lnout)
+            assert(nout_list != '')
+            nout_list = int(nout_list)
         except:
             if verbose:
                 print header+'no output lists in '+rundir+nlfile
             return 20 # FAIL
     
         # check if special testsuite output was activated in every output list
-        if get_param(rundir+nlfile, yuswitch, occurrence=nout_list) in ['.FALSE.', '.false.']:
+        yuswitch_value = get_param(rundir+nlfile, yuswitch, occurrence=nout_list)
+        assert(yuswitch_value != '')
+        if yuswitch_value in ['.FALSE.', '.false.']:
             if verbose:
                 print yuswitch+' is set to .false. in '+rundir+nlfile+' for this simulation'
             return 20 # FAIL

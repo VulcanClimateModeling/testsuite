@@ -1,0 +1,10 @@
+
+Check the file data: 
+    File:   output/lfff00000120
+    ie_tot =   70   je_tot =    7   ke_tot =   80
+    
+     var       ee    lev         min      imin   jmin          max      imax   jmax         mean  
+  u           13   1      -0.095288    0    0             0.003686    0    0            -0.014846
+  v           17   1      -0.113997    0    0             0.042260    0    0            -0.005102
+  eta         33   1      -0.169840    0    0             0.820299    0    0             0.055224
+  KE         102   1       0.000000    0    0             0.013075    0    0             0.001299

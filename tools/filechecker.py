@@ -131,8 +131,9 @@ class FileChecker:
     The FileChecker class goes through a given list of patterns stored in pattern_list
     to then output the most severe error returned by said patterns
     """
-    def __init__(self):
+    def __init__(self, verbose):
         self.pattern_list = []
+        self.verbose = verbose
     
     def read_file(self, filepath):
         """reads the given filepath and saves the resulting
@@ -144,9 +145,9 @@ class FileChecker:
             return text
 
         except:
-            if verbose:
+            if self.verbose:
                 print(header + 'failed to open ' + filepath)
-                return 30  # CRASH
+                return ''
 
     def add_pattern(self, pattern):
         """appends a Pattern object to the pattern list"""
@@ -170,6 +171,8 @@ class FileChecker:
 
     def check(self, logfile, verbose):
         text = self.read_file(logfile)
+        if not text:
+            return 30 # CRASH
         return self.check_patterns(verbose, text)
      
 #-----------------------unit tests------------------------------
@@ -199,7 +202,7 @@ class FileCheckerTest(unittest.TestCase):
     occurrencepattern = OccurrencePattern("OCCURRENCE pattern", "OCCURRENCE")
     verbosity_level = 0
     test_patterns = [warningpattern, errorpattern, occurrencepattern]
-    filechecker = FileChecker()
+    filechecker = FileChecker(verbose=1)
     filechecker.add_pattern_list(test_patterns)
 
     def  test_match(self):

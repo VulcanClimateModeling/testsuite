@@ -70,6 +70,7 @@ class Yuprtest(object):
             else:
                 if not header:
                     raise IOError('Parse error on line ' + str(lineno))
+        self._file.close()
 
     def __parse_line(self, line, lineno):
         data = line.strip().split()
@@ -239,6 +240,8 @@ class Compare(object):
         (status1, diff1, thresh) = self.__compare_values(var, step, minval1, minval2)
         (status2, diff2, thresh) = self.__compare_values(var, step, maxval1, maxval2)
         (status3, diff3, thresh) = self.__compare_values(var, step, meanval1, meanval2)
+        if self._mode == "update":
+            return None
         status = max([status1, status2, status3])
         diff = max([diff1, diff2, diff3])
         pos = ["minimum", "maximum", "mean"][[diff1, diff2, diff3].index(min([diff1, diff2, diff3]))]
@@ -272,7 +275,7 @@ class Compare(object):
         """print results"""
         print('%5s  %s  %7s  %s' % (
             'nt', '  '.join(['%9s' % x for x in self._threshold.variables + ['other']]), 'status', 'reason'))
-        for step in [str(x) for x in self._yu1.steps]:
+        for step in [str(x) for x in sorted(set(self._yu1.steps) & set(self._yu2.steps))]:
             vals = [self._maxdiff[step][x][2] for x in self._threshold.variables + ['*']]
             stat = ["MATCH", "OK", "FAIL"][self._status[step]]
             reason = 'none'
@@ -454,7 +457,7 @@ class Test(unittest.TestCase):
         c.print_results()
 
     def test_update(self):
-        for mode in ["const", "linear", "log"]:
+        for mode in ["const", "linear"]:
             c = Compare(self._filename1, self._filename2, self._t)
             c.thresholds.mode = mode
             c.thresholds.increase_factor = 2.0

@@ -1,0 +1,9 @@
+&runctl
+  dt=60.0,
+  hstart=0.0,
+  hstop=2.0,
+  nprocx=1,
+  nprocy=1,
+  nprocio=0,
+  itype_pert=0,
+/

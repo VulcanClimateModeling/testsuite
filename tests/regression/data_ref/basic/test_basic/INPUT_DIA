@@ -1,0 +1,4 @@
+&diactl
+  ltestsuite=.TRUE.,
+/END
+

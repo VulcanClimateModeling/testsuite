@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 """
 COSMO TECHNICAL TESTSUITE
@@ -46,7 +46,7 @@ def check():
     icon = str_to_bool(env['ICON'])
     yufile = env['YUFILE']
 
-    #check if namelist file with switch exists in namelistdir
+    # check if namelist file with switch exists in namelistdir
     switch_path = namelistdir + switch
     if not os.path.exists(switch_path):
         if verbosity>0:
@@ -58,15 +58,16 @@ def check():
     yufile2 = refoutdir + yufile
     # check if special testsuite output was activated
     if not icon:
-       if get_param(rundir+switch, yuswitch) in ['.FALSE.', '.false.']:
-          if verbosity:
-             print yuswitch +' is set to .false. in '+ rundir + switch +' for this simulation'
-          return 20 # FAIL
+        yuswitch_value = get_param(rundir+switch, yuswitch)
+        assert(yuswitch_value != '')
+        if yuswitch_value in ['.FALSE.', '.false.']:
+            if verbosity:
+               print yuswitch +' is set to .false. in '+ rundir + switch +' for this simulation'
+            return 20 # FAIL
 
-    #check if tolerance file exists in namelistdir or type dir
+    # check if tolerance file exists in namelistdir or type dir
+    # Note: the forcematch option gives precedence over the tolerance file
     tolerance_path = namelistdir + tolerance
-
-    # The forcematch option gives precedence over the tolerance file
     if forcematch:
         thresh = """
         minval =    0.0
@@ -78,6 +79,14 @@ def check():
         if verbosity>0:
             print header + "unable to find tolerance file at " + tolerance
         return 20 # FAIL
+
+    if (verbosity > 1):
+        print header + "     yufile1: " + yufile1
+        print header + "     yufile2: " + yufile2
+        if forcematch:
+            print header + "  thresholds: " + "(force match)"
+        else:
+            print header + "  thresholds: " + tolerance_path
 
     try:
         c = Compare(yufile1, yufile2, thresh)
