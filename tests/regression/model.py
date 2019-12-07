@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 """Script that solves that solves the 2D shallow water equations using finite
 differences where the momentum equations are taken to be linear, but the
