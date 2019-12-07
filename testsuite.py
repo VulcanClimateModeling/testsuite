@@ -20,7 +20,7 @@ import ast
 # private modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "./tools")) # this is the generic folder for subroutines
 from ts_error import StopError, SkipError
-from ts_utilities import system_command, change_dir
+from ts_utilities import system_command, change_dir, timeout_supported
 import ts_logger as LG
 from ts_test import Test
 from default_values import DefaultValues
@@ -35,7 +35,7 @@ __email__      = "cosmo-wg6@cosmo.org"
 __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 
 
-def parse_config_file(filename):
+def parse_config_file(filename, logger):
     config = ConfigParser.RawConfigParser()
 
     # create empty conf object
@@ -61,8 +61,9 @@ def parse_config_file(filename):
         print('Error while reading config file '+filename+':')
         print(e)
         raise # this exits with full traceback
-        
-    return conf 
+
+    logger.important('Configuration file: ' + filename)
+    return conf
 
 
 def parse_cmdline():
@@ -75,22 +76,22 @@ def parse_cmdline():
                 "information",
               epilog=
                 "Example: ./testsuite.py -n 16 --color -f --exe=cosmo --mpicmd=\'aprun -n\' -v 1")
-    
+
     # defines the number of processor, the number of processors is not a test specific option,
     # it overrides the values present in the namelist INPUT_ORG
     parser.set_defaults(nprocs=DefaultValues.nprocs)
     parser.add_option("-n",type="int",dest="nprocs",
                help=("number of processors (nprocx*nprocy+nprocio) to use [default=%d]" % DefaultValues.nprocs))
-    
+
     # defines the number of I/O processors, not a test specific option
     parser.set_defaults(nprocio=DefaultValues.nprocio)
     parser.add_option("--nprocio",type="int",dest="nprocio",
                help="set number of asynchronous IO processor, [default=<from namelist>]")
- 
+
     # defines the behavior of testsuite after fail or crash
     parser.add_option("-f","--force",action="store_true",dest="force",default=False,
                help="do not stop upon error")
-    
+
     # set the level of verbosity of the standard output
     parser.set_defaults(v_level=DefaultValues.v_level)
     parser.add_option("-v",type="int",dest="v_level",help=("verbosity level 0 to 3 [default=%d]" % DefaultValues.v_level))
@@ -104,6 +105,10 @@ def parse_cmdline():
     parser.set_defaults(exe=DefaultValues.exe)
     parser.add_option("--exe",dest="exe",type="string",
                help="Executable file, [default=<from testlist.xml>]")
+
+    # defines the arguments to pass to the executable
+    parser.set_defaults(args='')
+    parser.add_option("--args",dest="args",type="string", help="Arguments to executable, [default='']")
 
     # defines if the output will be colored or not
     parser.add_option("--color",action="store_true",dest="color",default=False,
@@ -122,16 +127,16 @@ def parse_cmdline():
     parser.set_defaults(stdout=DefaultValues.stdout)
     parser.add_option("-o",dest="stdout",type="string",action="store",
                help="Redirect standard output to selected file [default=<stdout>]")
-    
+
     # defines the behaviour of the redirected standard output, if appended or overwritten
     parser.add_option("-a","--append",action="store_true",default=False,dest="outappend",
                help="Appends standard output if redirection selected [default=False]")
-    
+
     # only one test is executed
     parser.add_option("--only",dest="only",type="string",action="store",
                help="Run only one test define as type,name (e.g. --only=cosmo7,test_1)")
 
-    # update namelist (no run). This is useful to quickly change all namelist at once 
+    # update namelist (no run). This is useful to quickly change all namelist at once
     parser.add_option("--update-namelist",dest="upnamelist",action="store_true",default=False,
                help="Use Testsuite to update namelists (no tests executed)")
 
@@ -154,7 +159,7 @@ def parse_cmdline():
     parser.add_option("--reset-thresholds",dest="reset_thresholds",action="store_true",default=DefaultValues.reset_thresholds,
                help="Set all thresholds to 0.0 before tuning")
 
-    # update namelist (no run). This is useful to quickly change all namelist at once 
+    # update namelist (no run). This is useful to quickly change all namelist at once
     parser.add_option("--update-yufiles",dest="upyufiles",action="store_true",default=False,
                help="Define new references (no tests executed)")
 
@@ -186,43 +191,42 @@ def parse_cmdline():
                help=("Name of the testsuite configuration file [default=%s]" % DefaultValues.config_file))
     # parse
     try:
-        (options,args)=parser.parse_args()
-    except (OP.OptionError,TypeError):
-        sys.exit("problem parsing command line arguments (check ./testsuite.py -h for valid arguments)")
+        (options, args) = parser.parse_args()
+    except (OP.OptionError, TypeError):
+        sys.exit("Problem parsing command line arguments (check ./testsuite.py -h for valid arguments)")
 
+    if options.timeout and not timeout_supported:
+        sys.exit('Timeout is not supported by subprocess.')
     return options
 
 
 def parse_xmlfile(filename, logger):
 
-    try: 
+    try:
         xmltree = XML.parse(filename)
     except Exception as e:
-        logger.error('Error while reading xml file '+filename+':')
+        logger.error('Error while reading xml file ' + filename + ':')
         logger.error(e)
         sys.exit(1) # this exits without traceback
         #raise # this exits with full traceback
+
+    logger.important('XML file: ' + filename)
 
     return xmltree.getroot()
 
 
 def setup_logger(options):
-
-    # instantiate logger class
     logger = LG.Logger(options.stdout, options.outappend, options.color)
-
-    # set verbosity level
     if options.v_level <= 0:
-      logger.setLevel(LG.ERROR)
+        logger.setLevel(LG.ERROR)
     elif options.v_level == 1:
-      logger.setLevel(LG.WARNING)
+        logger.setLevel(LG.WARNING)
     elif options.v_level == 2:
-      logger.setLevel(LG.INFO)
+        logger.setLevel(LG.INFO)
     elif options.v_level >= 3:
-      logger.setLevel(LG.DEBUG)
-
+        logger.setLevel(LG.DEBUG)
     return logger
-    
+
 
 def main():
     """read configuration and then execute tests"""
@@ -233,28 +237,27 @@ def main():
     # parse command line arguments
     options = parse_cmdline()
 
-    if os.path.isfile(options.config_file): 
-       conf = parse_config_file(options.config_file)
-    elif os.path.isfile(os.path.join(os.path.dirname(__file__),options.config_file)):
-       conf = parse_config_file(os.path.join(os.path.dirname(__file__),options.config_file))     
-    else:
-        #logger not initialize at this stage, use print and exit
-        print('Error: Missing configuration file '+options.config_file)
-        sys.exit(1)
-
-
-        
     # redirect standard output (if required)
     logger = setup_logger(options)
-
-    # hello world!
     logger.important('TESTSUITE '+__version__)
 
+    # read configuration file
+    if os.path.isfile(options.config_file):
+        config_filepath = options.config_file
+    elif os.path.isfile(os.path.join(os.path.dirname(__file__),options.config_file)):
+        config_filepath = os.path.join(os.path.dirname(__file__),options.config_file)
+    else:
+        # logger not initialized at this stage, use print and exit
+        print('Error: Missing configuration file '+options.config_file)
+        sys.exit(1)
+    conf = parse_config_file(config_filepath, logger)
+
     # parse the .xml file which contains the test definitions
-    logger.info('Parsing XML ('+options.testlist+')')
     root = parse_xmlfile(options.testlist, logger)
 
     # generate work directory
+    if not os.path.isabs(options.workdir):
+        options.workdir = os.path.join(os.getcwd(), options.workdir)
     status = system_command('/bin/mkdir -p '+options.workdir+'/', logger, throw_exception=False)
     if status:
       exit(status)
@@ -265,7 +268,7 @@ def main():
 
         # create test object
         mytest = Test(child, options, conf, logger)
-        
+
         if mytest.run_test():
             # run test
             try:
@@ -283,12 +286,12 @@ def main():
                 # if upnamelist=True, no model run.
                 elif options.upnamelist:
                     logger.important('Update namelist mode, no run')
-                    mytest.prepare() # prepare test directory and update namelists
+                    mytest.options.pert = 0
                     mytest.update_namelist() #copy back namelist in typedir
                 # Spcial setup for ICON where only check is run
                 elif options.icon:
-                    mytest.options.pert = 0
                     logger.important('Running checks for ICON')
+                    mytest.options.pert = 0
                     mytest.log_file = 'final_status.txt'
                     mytest.check()
                 else:
@@ -320,8 +323,8 @@ def main():
             except StopError as emessage:
                 if str(emessage).strip():
                     logger.error(emessage)
-                    if not options.force:
-                        stop = True
+                if not options.force:
+                    stop = True
 
             # write result
             mytest.write_result()
@@ -339,4 +342,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

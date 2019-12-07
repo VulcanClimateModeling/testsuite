@@ -49,7 +49,9 @@ def check():
     if switch: # extract timestep
         nlfile = switch  # namelist file containing dt
         try:
-            dt = float(get_param(rundir+nlfile, 'dt'))
+            dt = get_param(rundir+nlfile, 'dt')
+            assert(dt != '')
+            dt = float(dt)
         except:
             if verbose:
                 print header+'failed to extract dt from '+rundir+nlfile

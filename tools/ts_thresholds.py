@@ -340,7 +340,7 @@ class Thresholds(object):
             stepmax = self._steps[imax]
             if stepmin != stepmax:
                 position = float(step - stepmin) / float(stepmax - stepmin)
-                tnew = self.__interpolate_threshold(t[imin], value, position)
+                tnew = t[imax] * value / self.__interpolate_threshold(t[imin], t[imax], position)
                 t[imax] = max(t[imax], tnew)
             else:
                 t[imax] = value

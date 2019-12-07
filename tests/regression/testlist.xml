@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testlist>
+
+  <test name="test_plain" type="basic">
+    <description>Plain test</description>
+    <executable>model.py</executable>
+  </test>
+
+  <test name="test_basic" type="basic">
+    <description>Basic test with tolerance checker</description>
+    <executable>model.py</executable>
+    <checker>run_success_check.py</checker>
+    <checker>tolerance_check.py</checker>
+  </test>
+
+  <test name="test_derived" type="basic">
+    <description>Basic derived test without data directory</description>
+    <executable>model.py</executable>
+    <namelistdir>basic/test_basic</namelistdir>
+    <checker>run_success_check.py</checker>
+    <checker>tolerance_check.py</checker>
+  </test>
+
+  <test name="test_identical" type="basic">
+    <description>Test with identical checker (against test_basic)</description>
+    <executable>model.py</executable>
+    <namelistdir>basic/test_basic</namelistdir>
+    <refoutdir>../test_basic</refoutdir>
+    <depend>../test_basic</depend>
+    <checker>run_success_check.py</checker>
+    <checker>identical_check.py</checker>
+  </test>
+
+  <test name="test_changepar" type="basic">
+    <description>Test with changepar of nstop=7 in INPUT_ORG</description>
+    <executable>model.py</executable>
+    <namelistdir>basic/test_basic</namelistdir>
+    <refoutdir>../test_basic</refoutdir>
+    <depend>../test_basic</depend>
+    <changepar file="INPUT_ORG" name="nstop">7</changepar>
+    <checker>run_success_check.py</checker>
+    <checker>identical_check.py</checker>
+  </test>
+
+  <test name="test_full" type="basic">
+    <description>Test with full suite of checkers</description>
+    <executable>model.py</executable>
+    <namelistdir>basic/test_basic</namelistdir>
+    <checker>run_success_check.py</checker>
+    <checker>existence_grib_out.sh</checker>
+    <checker>existence_ncdf_out.sh</checker>
+    <checker>tolerance_check.py</checker>
+    <checker>output_tolerance_check.py</checker>
+  </test>
+
+  <test name="test_parallel" type="basic">
+    <description>Test with autoparallel set to 2</description>
+    <executable>model.py</executable>
+    <namelistdir>basic/test_basic</namelistdir>
+    <refoutdir>../test_full</refoutdir>
+    <depend>../test_full</depend>
+    <autoparallel>2</autoparallel>
+    <checker>run_success_check.py</checker>
+    <checker>existence_grib_out.sh</checker>
+    <checker>existence_ncdf_out.sh</checker>
+    <checker>tolerance_check.py</checker>
+    <checker>output_tolerance_check.py</checker>
+  </test>
+
+  <test name="test_restart" type="basic">
+    <description>Test restart</description>
+    <executable>model.py</executable>
+    <namelistdir>basic/test_basic</namelistdir>
+    <refoutdir>../test_full</refoutdir>
+    <depend>../test_full</depend>
+    <prerun>restart</prerun>
+    <changepar file="INPUT_ORG" name="hstart">1.0</changepar>
+    <checker>run_success_check.py</checker>
+    <checker>existence_grib_out.sh</checker>
+    <checker>existence_ncdf_out.sh</checker>
+    <checker>identical_check.py</checker>
+  </test>
+
+</testlist>
