@@ -5,5 +5,4 @@ but has subsequently been generalized to work with other atmospheric models as w
 
 ## Continuous Integration [![Build Status](https://travis-ci.com/VulcanClimateModeling/testsuite.svg?branch=master)](https://travis-ci.com/VulcanClimateModeling/testsuite)
 
-
-
+Testsuite builds are run on Travis CI [here](https://travis-ci.com/C2SM-RCM/testsuite).
