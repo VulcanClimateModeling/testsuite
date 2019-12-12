@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 """
 COSMO TECHNICAL TESTSUITE
@@ -88,7 +88,7 @@ def system_command(cmd, logger, throw_exception=True, return_output=False, issue
             line = s.stdout.readline()
             if not line:
                 break
-            lines += line
+            lines += line.decode('ascii')
             if not return_output:
                 logger.debug('   Out: '+line.rstrip())
     if not status:

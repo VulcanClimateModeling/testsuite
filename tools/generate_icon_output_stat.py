@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 #########################################################
 # This script reads in a file containing ICON output,   #
@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-file', dest = 'file', default = '~', help = "ICON output file to process" )
 args = parser.parse_args()
 
-print "Processing file:{}".format(args.file)
+print("Processing file:{}".format(args.file))
 
 # Get the min,mean, and max of the variables
 procmn = subprocess.Popen("cdo -s fldmin {} min.nc".format(args.file), stdout=subprocess.PIPE, shell=True)

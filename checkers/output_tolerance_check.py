@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 """
 COSMO TECHNICAL TESTSUITE
@@ -62,7 +62,7 @@ def check():
             dt = float(dt)
         except:
             if verbose:
-                print header+'failed to extract dt from '+rundir+nlfile2
+                print(header+'failed to extract dt from '+rundir+nlfile2)
             return 20 # FAIL
 
         # check for output lists
@@ -72,7 +72,7 @@ def check():
             nout_list = int(nout_list)
         except:
             if verbose:
-                print header+'no output lists in '+rundir+nlfile
+                print(header+'no output lists in '+rundir+nlfile)
             return 20 # FAIL
     
         # check if special testsuite output was activated in every output list
@@ -80,7 +80,7 @@ def check():
         assert(yuswitch_value != '')
         if yuswitch_value in ['.FALSE.', '.false.']:
             if verbose:
-                print yuswitch+' is set to .false. in '+rundir+nlfile+' for this simulation'
+                print(yuswitch+' is set to .false. in '+rundir+nlfile+' for this simulation')
             return 20 # FAIL
 
     #check if tolerance file exists in namelistdir
@@ -104,17 +104,17 @@ def check():
     # Use tolerance file if exists
     if ltol_file:
         if verbose==2:
-            print header + 'Using tolerance values from file'
+            print(header + 'Using tolerance values from file')
         elif verbose>2:
-            print header + 'Using tolerance values from file '+tolerance_file
+            print(header + 'Using tolerance values from file '+tolerance_file)
         try:
             threshold = ts_thresholds.Thresholds(tolerance_file)
             if "CHKDAT" in threshold.variables:
                 threshold_var = "CHKDAT"
         except:
             if verbose:
-                print header+'Error while reading '+tolerance_file
-                print header+'Cannot read one of the following parameter: tol_times,tol_out,minval'
+                print(header+'Error while reading '+tolerance_file)
+                print(header+'Cannot read one of the following parameter: tol_times,tol_out,minval')
             return 20 # FAIL
     
     # Identical thresholds
@@ -133,18 +133,18 @@ def check():
     try:
         # check for bit identical results
         if verbose>1:
-            print header + 'Checking first if results are bit identical'
+            print(header + 'Checking first if results are bit identical')
         err_count_identical = ts_yuchdat.compare(yufile1, yufile2, threshold_identical, threshold_var, v_level=-1)
         
         if verbose>1:
             if err_count_identical==0:
-                print header + 'Results are bit identical'
+                print(header + 'Results are bit identical')
             else:
-                print header + 'Results are not bit identical'
+                print(header + 'Results are not bit identical')
         
         # check if results are within tolerance values
         if verbose>1:
-            print header + 'Checking if results are within tolerance'
+            print(header + 'Checking if results are within tolerance')
         
         error_count = ts_yuchdat.compare(yufile1, yufile2, threshold, threshold_var, tune_thresholds, v_level=0)
         
@@ -152,13 +152,13 @@ def check():
             threshold.to_file(tolerance_path)
         if verbose>1:
             if error_count==0:
-                print header + 'Results are within thresholds'
+                print(header + 'Results are within thresholds')
             else:
-                print header + 'Results are not within thresholds'
+                print(header + 'Results are not within thresholds')
 
     except Exception as e:
         if verbose:
-            print e
+            print(e)
         return 20 # FAIL
 
     if err_count_identical == 0:

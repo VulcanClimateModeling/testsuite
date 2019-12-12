@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 #########################################################
 # This script reads in a file containing ICON input,    #
@@ -18,7 +18,7 @@ parser.add_argument('-rperturb', dest = 'rperturb', default = '0.0', help = "per
 parser.add_argument('-outputfile', dest = 'outputfile', default = '~', help = "output file name" )
 args = parser.parse_args()
 
-print "Processing file:{} with {} perturbation coefficient".format(args.file, args.rperturb)
+print("Processing file:{} with {} perturbation coefficient".format(args.file, args.rperturb))
 
 #Make a temporary folder 
 procmkdir = subprocess.Popen("mkdir temp", stdout=subprocess.PIPE, shell=True)

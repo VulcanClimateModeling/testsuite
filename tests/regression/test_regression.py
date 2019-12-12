@@ -196,7 +196,6 @@ def test_help_argument():
 def test_plain_testcase():
     exit_status, stdout, stderr = run_testsuite(['--only=basic,test_plain'])
     log = read_exe_logfile('basic/test_plain')
-    print('\n\n>>> log\n' + log)
     check_successful_run(exit_status, stdout, stderr, force_match=True)
     assert number_of_lines_with_pattern('RESULT', stdout) == 1
     assert 'basic/test_plain' in extract_lines_with_pattern('RESULT', stdout)

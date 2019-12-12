@@ -33,7 +33,7 @@ def cmp_table(file1,file2,colpattern,minval,threshold,verbose=1,maxcompline=-1):
         return -1
     elif not(os.path.exists(file2)):
         print('File %s does not exist' %(file2))
-        print 'File '+file2+' does not exist'
+        print('File '+file2+' does not exist')
         return -1
 
     # convert input
@@ -103,7 +103,7 @@ def cmp_table(file1,file2,colpattern,minval,threshold,verbose=1,maxcompline=-1):
 
 
     if ncomp==0:
-        print 'Warning :no line to compare'
+        print('Warning :no line to compare')
         nerror=-2
 
     if lerror and verbose>0:
@@ -145,10 +145,10 @@ if __name__ == "__main__":
         cmp_table(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4], \
              sys.argv[5],sys.argv[6],sys.argv[7])    
     else:
-        print '''USAGE : ./comp_table file1 file2 colpattern minval threshold [verbose maxcompline]
+        print('''USAGE : ./comp_table file1 file2 colpattern minval threshold [verbose maxcompline]
         General purpose script to compare two files containing tables         
         Only lines with given table column pattern. Column to be compared must be numbers are marked with c 
         column to discard with x 
         colpattern c for compare or x for ignore, ex: xccx discard first and last column of a 4 column table 
-'''
+''')
 

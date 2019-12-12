@@ -8,7 +8,6 @@ help: ## display help on Makefile targets
 .DEFAULT_GOAL := help
 
 test: ## run tests
-	cd tests/regression; \
 	. env.sh; \
 	. env/bin/activate; \
 	pytest -v -s

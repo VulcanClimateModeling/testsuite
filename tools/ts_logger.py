@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 """
 COSMO TECHNICAL TESTSUITE
@@ -123,7 +123,7 @@ class Logger:
         slen = len(status_str(status))
         status = pretty_status_str(status, self.color, indent==0)
         pad = STAT_COLUMN - slen - 2*indent
-        prefix=' '*(2*indent) + '[' + ' '*(pad/2) + status + ' '*(pad-pad/2) + '] '
+        prefix=' '*(2*indent) + '[' + ' '*(pad//2) + status + ' '*(pad-pad//2) + '] '
         self.log(IMPORTANT, prefix + msg, *args, **kwargs)
   
     def error(self, msg, *args, **kwargs):

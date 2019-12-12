@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 """
 COSMO TECHNICAL TESTSUITE
@@ -14,7 +14,7 @@ import os, sys, string, struct
 import optparse as OP
 import xml.etree.ElementTree as XML
 import logging as LG
-import ConfigParser
+import configparser
 import ast
 
 # private modules
@@ -22,7 +22,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "./tools")) # this is th
 from ts_error import StopError, SkipError
 from ts_utilities import system_command, change_dir, timeout_supported
 import ts_logger as LG
-from ts_test import Test
+from ts_testcase import Test
 from default_values import DefaultValues
 
 # information
@@ -36,7 +36,7 @@ __maintainer__ = "xavier.lapillonne@meteoswiss.ch"
 
 
 def parse_config_file(filename, logger):
-    config = ConfigParser.RawConfigParser()
+    config = configparser.ConfigParser()
 
     # create empty conf object
     conf = type('configuration', (), {})()
